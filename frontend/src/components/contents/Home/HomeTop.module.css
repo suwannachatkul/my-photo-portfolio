@@ -1,0 +1,129 @@
+.TaglineDiv {
+  position: absolute;
+  bottom: 20%;
+  left: 15%;
+  z-index: 1000;
+}
+
+.TaglineDiv h1 {
+  color: #f5f5f5;
+  font-size: 4rem;
+  margin-bottom: 0.5rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+  .TaglineDiv h1 {
+    white-space:normal; 
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 575px) {
+  .TaglineDiv {
+    width: 55%;
+  }
+  .TaglineDiv h1 {
+    white-space:normal !important; 
+    overflow: hidden !important;
+    font-size: 3rem;
+  }
+
+  
+}
+
+.animateText {
+  white-space: nowrap !important; 
+  overflow: hidden !important;
+  background: linear-gradient(
+    to right,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0) 50%,
+    #f5f5f5 50%,
+    #f5f5f5 100%
+   ); /* half color half white */
+  background-size: 300% 100%;
+  background-position: 100% 100%;
+  animation: highlightShowText 1s ease forwards;
+}
+
+.TaglineDiv p {
+  color: #f5f5f5;
+  font-size: 1em;
+  font-family: "Poppins", sans-serif;
+  text-shadow: 0 1px 0 black;
+  font-weight: 400;
+  margin-bottom: 1.2rem;
+  opacity: 0;
+}
+
+.TaglineBtn {
+  position: relative;
+  z-index: 1 !important;
+  min-width: 160px !important ;
+  height: 46px !important ;
+  line-height: 42px !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  display: inline-block!important;
+  padding: 0 30px !important;
+  text-align: center !important;
+  text-transform: capitalize !important;
+  background-color: transparent !important;
+  color: #ffffff !important;
+  border: 2px solid #DDDDDD !important;
+  border-radius: 60px !important;
+  transition-duration: 500ms !important;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.TaglineBtn:focus,
+.TaglineBtn:hover {
+  font-weight: 500 !important;
+  box-shadow: 0 2px 40px 8px rgba(15, 15, 15, 0.15) !important;
+  background-color: #DDDDDD !important;
+  color: #222831 !important;
+}
+
+.animateBtn {  
+  opacity: 0;
+  animation: btnDelayOpacity 1s ease forwards;
+  animation-delay: 0.5s;
+}
+
+@keyframes highlightShowText {
+  0%  {
+      width: 0%;
+      opacity: 1;
+      text-shadow: none;
+  }
+  50% {
+    width: 100%;
+    background-position: 100% 100%;
+    text-shadow: none;
+  }
+  90% {
+    text-shadow: none;
+  }
+  100% {
+    width: 100%;
+    opacity: 1;
+    background-position: 0% 100%;
+    text-shadow: 0 1px 0 black;
+    white-space:normal; 
+    overflow: hidden;
+  }
+}
+
+@keyframes btnDelayOpacity {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
