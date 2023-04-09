@@ -1,6 +1,6 @@
-import { useState } from "react";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import { NavLink } from "react-router-dom";
 
 import "./Header.css";
 
@@ -8,35 +8,35 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 
-const Header = (props: { isAtPageTop: boolean }) => {
-  const [navActive, setNavActive] = useState("");
+interface headerProps {
+  isAtPageTop?: boolean;
+}
 
+const Header = ({ isAtPageTop = false }: headerProps) => {
   const navLinkList = [
-    { link: "#home", name: "Home" },
-    { link: "#gallery", name: "Gallery" },
-    { link: "#gear", name: "Gear" },
-    { link: "#about", name: "About" },
+    { link: "home", name: "Home" },
+    { link: "gallery", name: "Gallery" },
+    { link: "blog", name: "Blog" },
+    { link: "about", name: "About" },
     {
-        link: "#user",
-        name: "User",
-        icon: (
-          <FontAwesomeIcon icon={faUser} />
-        )
-      },
+      link: "user",
+      name: "User",
+      icon: <FontAwesomeIcon icon={faUser} />,
+    },
     {
       link: "#instagram",
       name: "Instagram",
       icon: (
-        <FontAwesomeIcon icon={faInstagram} size="lg" style={{transform: "translateY(-1px)"}}/>
-      )
+        <FontAwesomeIcon
+          icon={faInstagram}
+          size="lg"
+          style={{ transform: "translateY(-1px)" }}
+        />
+      ),
     },
   ];
 
-  const navLinkClickHandler = (navName: string) => {
-    setNavActive(navName);
-  };
-
-  const headerBackground = props.isAtPageTop
+  const headerBackground = isAtPageTop
     ? "transparent-background"
     : "fill-background";
 
@@ -61,14 +61,14 @@ const Header = (props: { isAtPageTop: boolean }) => {
           <Nav>
             {navLinkList.map((item) => (
               <li key={item.name}>
-                <Nav.Link
-                  href={item.link}
-                  className="page-scroll"
-                  active={navActive === item.name}
-                  onClick={(e) => navLinkClickHandler(item.name)}
+                <NavLink
+                  to={"/" + item.link}
+                  className={({ isActive }) =>
+                    isActive ? "active page-scroll nav-link" : "page-scroll nav-link"
+                  }
                 >
                   {!item.icon ? item.name : item.icon}
-                </Nav.Link>
+                </NavLink>
               </li>
             ))}
           </Nav>
