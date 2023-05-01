@@ -1,27 +1,28 @@
-import React, { useState, useEffect } from "react";
-import "./App.css";
-import Header from "./components/UI/Header";
 
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import "./App.css";
+
+import ErrorPage from "./pages/Error";
+import GalleryPage, {loader as GalleryLoader} from './pages/Gallery';
+import HomePage, {loader as HomeLoader} from "./pages/Home";
+
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <HomePage />,
+    errorElement: <ErrorPage />,
+    loader: HomeLoader,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: 'home', element: <HomePage /> },
+    ]
+  },
+  { path: 'gallery', element: <GalleryPage />, loader: GalleryLoader },
+])
 
 function App() {
-
-  const [isAtTop, setIsAtTop] = useState(true);
-
-  useEffect(() => {
-    window.onscroll = () => {
-      if (window.pageYOffset === 0) {
-        setIsAtTop(true);
-      } else {
-        setIsAtTop(false);
-      }
-    };
-  }, []);
-  
-  return (
-    <React.Fragment>
-      <Header isAtPageTop={isAtTop} />
-    </React.Fragment>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
