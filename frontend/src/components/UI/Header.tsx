@@ -64,7 +64,7 @@ const Header = ({ isAtPageTop = false }: headerProps) => {
                 <NavLink
                   to={"/" + item.link}
                   className={({ isActive }) =>
-                    isActive ? "active page-scroll nav-link" : "page-scroll nav-link"
+                    isActive && !item.icon ? "active page-scroll nav-link" : "page-scroll nav-link"
                   }
                 >
                   {!item.icon ? item.name : item.icon}
