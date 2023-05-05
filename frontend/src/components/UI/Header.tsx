@@ -17,7 +17,7 @@ const Header = ({ isAtPageTop = false }: headerProps) => {
     { link: "home", name: "Home" },
     { link: "gallery", name: "Gallery" },
     { link: "blog", name: "Blog" },
-    { link: "about", name: "About" },
+    { link: "contact", name: "Contact" },
     {
       link: "user",
       name: "User",
