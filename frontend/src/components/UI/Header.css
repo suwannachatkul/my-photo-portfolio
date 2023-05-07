@@ -46,6 +46,7 @@
   background-position: 100% 100%;
   transition: background-position 0.2s ease;
   text-decoration: none;
+  overflow: visible;
 }
 
 #menu .navbar-nav > li > a:hover {
@@ -103,4 +104,116 @@
 
 #menu *:focus {
   outline: none;
+}
+
+.icon-header {
+  background: none !important;
+  border: none !important;
+  transform: translateY(-2px);
+  margin: 9px 20px 0;
+  width: 20px;
+}
+
+.icon-div {
+  width: fit-content;
+  height: fit-content;
+}
+
+.icon-div:after {
+  display: block;
+  position: relative;
+  left: 0;
+  bottom: -1px;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(to right, #fc6060 0%, #ffb7b7 100%);
+  content: "";
+  transition: width 0.2s;
+}
+
+.icon-div:hover:after {
+  width: 100%;
+} 
+
+.icon-colored {
+  color: #fc6060;
+  transition: color 0.5s ease;
+}
+
+.icon-white {
+  color: white;
+  transition: color 0.5s ease;
+}
+
+
+#logindiv {
+  overflow: visible;
+  width: fit-content;
+  height: fit-content;
+  font-family: "Lato", sans-serif;
+  text-transform: uppercase;
+  color:#191919;
+  background-color: #f5f5f5;
+  -webkit-text-fill-color: initial;
+  overflow: hidden;
+  text-decoration: none;
+  overflow: visible;
+  opacity: 0;
+  transition: all 1s ease;
+}
+
+#logindiv.show{
+  opacity: 1;
+  animation: fadeInAni 1s;
+}
+
+#logindiv .row {
+  min-width:300px;
+}
+
+#logindiv label {
+  color:#191919 !important;
+  text-decoration: none;
+  background-clip:border-box;
+}
+
+#logindiv form > button {
+  color: #f5f5f5 !important;
+  background: #fc6060 !important;
+  border: 2px solid #fc6060 !important;
+  font-weight: 400 !important;
+  font-size: 1rem !important;
+  min-width: 60px;
+}
+
+#logindiv form > button:hover {
+  background: transparent !important;
+  /* border: 2px solid #fc6060 !important; */
+  color: #fc6060 !important;
+}
+
+#logindiv form > .error {
+  color: red;
+  font-size: 10px;
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
+}
+
+#logindiv form > .hide {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.logoutdiv{
+  display: flex;
+  justify-content: center;
+}
+
+.logoutdiv > button {
+  /* justify-content: center; */
+  color: #f5f5f5 !important;
+  background: #fc6060 !important;
+  border: 2px solid #fc6060 !important;
+  font-weight: 400 !important;
+  font-size: 1rem !important;
 }

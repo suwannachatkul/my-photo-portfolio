@@ -7,6 +7,7 @@ import "./Header.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
+import HeaderLogin from "./HeaderLogin";
 
 interface headerProps {
   isAtPageTop?: boolean;
@@ -61,14 +62,20 @@ const Header = ({ isAtPageTop = false }: headerProps) => {
           <Nav>
             {navLinkList.map((item) => (
               <li key={item.name}>
-                <NavLink
-                  to={"/" + item.link}
-                  className={({ isActive }) =>
-                    isActive && !item.icon ? "active page-scroll nav-link" : "page-scroll nav-link"
-                  }
-                >
-                  {!item.icon ? item.name : item.icon}
-                </NavLink>
+                {item.name === "User" ? (
+                  <HeaderLogin />
+                ) : (
+                  <NavLink
+                    to={"/" + item.link}
+                    className={({ isActive }) =>
+                      isActive && !item.icon
+                        ? "active page-scroll nav-link"
+                        : "page-scroll nav-link"
+                    }
+                  >
+                    {!item.icon ? item.name : item.icon}
+                  </NavLink>
+                )}
               </li>
             ))}
           </Nav>
