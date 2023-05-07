@@ -1,60 +1,26 @@
 import { useState } from "react";
 
-import "./IsotopeItems.css";
+import "./IsotopeGallery.css";
+import { CustomImgListType } from "../../UI/Lightbox";
 
 const SELECTION_LIST = [
   { name: "All", filterName: "*" },
-  { name: "Summer", filterName: "summer" },
-  { name: "Spring", filterName: "spring" },
-  { name: "Autumn", filterName: "autumn" },
-  { name: "Winter", filterName: "winter" },
+  { name: "Summer", filterName: "Summer" },
+  { name: "Spring", filterName: "Spring" },
+  { name: "Autumn", filterName: "Autumn" },
+  { name: "Winter", filterName: "Winter" },
 ];
 
-const IMG_LIST = [
-  {
-    img: "/assets/images/DSC02733.png",
-    name: "1",
-    Location: { Region: "Tohoku" },
-    tag: ["summer", "test"],
-  },
-  {
-    img: "/assets/images/portrait/DSC09007.png",
-    name: "2",
-    Location: { Region: "Hokkaido" },
-    tag: ["winter"],
-  },
-  {
-    img: "/assets/images/DSC06441.png",
-    name: "3",
-    Location: { Region: "Hokkaido" },
-    tag: ["autumn"],
-  },
-  {
-    img: "/assets/images/portrait/DSC09007.png",
-    name: "4",
-    Location: { Region: "Kanto" },
-    tag: ["summer"],
-  },
-  {
-    img: "/assets/images/DSC02733.png",
-    name: "5",
-    Location: { Region: "Hokkaido" },
-    tag: ["spring"],
-  },
-  // {img: '', name: '', Location: {Region: ''}, tag: []},
-];
 
-interface IIsotopeItemsProps {
+interface IIsotopeGalleryProps {
+  imageList: CustomImgListType[];
   isotopeContainerClass: string;
   isotopeItemClass: string;
   selectionHandle: (name: string) => void;
+  onImgClick: (imgIndex: number) => void
 }
 
-export interface clickItemHandle {
-  clickItemHandle: (name: string) => void;
-}
-
-const IsotopeItems = (props: IIsotopeItemsProps) => {
+const IsotopeGallery = (props: IIsotopeGalleryProps) => {
   const [selection, setSelection] = useState("*");
 
   function clickItemHandle(name: string) {
@@ -93,18 +59,18 @@ const IsotopeItems = (props: IIsotopeItemsProps) => {
           <div
             className={`row ${props.isotopeContainerClass} mx-lg-5 mx-md-1 imgContainer`}
           >
-            {IMG_LIST.map((imgItem) => {
+            {props.imageList.map((imgItem, index) => {
               let classTag = ""
-              imgItem.tag.forEach(tag => {classTag += " " + tag});
+              imgItem.tags?.forEach(tag => {classTag += " " + tag});
               return (
                 <div
-                  className={`col-12 col-sm-6 col-lg-3 single_gallery_item ${classTag} mb-3 fadeInUp`}
+                  className={`col-12 col-lg-6 col-xl-4 single_gallery_item ${classTag} mb-3 fadeInUp`}
                   key={imgItem.name}
                 >
                   <div className="single-portfolio-content">
-                    <img src={imgItem.img} alt={imgItem.name} />
+                    <img src={imgItem.src} alt={imgItem.name} />
                     <div className="hover-content">
-                      <a href="#image" className="portfolio-img">
+                      <a href="#image" className="portfolio-img" onClick={() => props.onImgClick(index)}>
                         +
                       </a>
                     </div>
@@ -119,4 +85,4 @@ const IsotopeItems = (props: IIsotopeItemsProps) => {
   );
 };
 
-export default IsotopeItems;
+export default IsotopeGallery;
