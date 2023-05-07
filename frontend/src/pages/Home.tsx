@@ -8,11 +8,50 @@ import Header from "../components/UI/Header";
 import LoadingFullPage from "../components/UI/LoadingFullPage";
 
 
+// dummy image list
+const IMG_LIST = [
+  {
+    src: "/assets/images/DSC02733.png",
+    title: "tohoku1",
+    alt: "1",
+    tags: ["Tohoku"],
+  },
+  {
+    src: "/assets/images/portrait/DSC09007.png",
+    title: "hokkaido2",
+    alt: "2",
+    tags: ["Hokkaido"],
+  },
+  {
+    src: "/assets/images/DSC06441.png",
+    title: "hokkaido3",
+    alt: "3",
+    tags: ["Hokkaido"],
+  },
+  {
+    src: "/assets/images/portrait/DSC09007.png",
+    title: "kanto4",
+    alt: "4",
+    tags: ["Kanto"],
+  },
+  {
+    src: "/assets/images/DSC02733.png",
+    title: "hokkaido5",
+    alt: "5",
+    tags: ["Hokkaido"],
+  },
+  // {img: '', name: '', Location: {Region: ''}, tag: []},
+];
+
 function HomePage() {
   const { loadData } = useLoaderData() as { loadData: [] };
   const [isAtTop, setIsAtTop] = useState(false);
 
   useEffect(() => {
+    // initial with at top true
+    setIsAtTop(true);
+
+    // set scroll event
     window.onscroll = () => {
       if (window.pageYOffset === 0) {
         setIsAtTop(true);
@@ -32,7 +71,7 @@ function HomePage() {
     <div className="fadeIn">
       <HomeTop />
       <HomeBody />
-      <MapGallery />
+      <MapGallery imageList={IMG_LIST}/>
       <Footer />
     </div>
   );
@@ -43,7 +82,6 @@ function HomePage() {
       <Suspense fallback={loading}>
         <Await resolve={loadData}>
           {(loadedEvents) => {
-            setIsAtTop(true)
             return mainContents;
           }}
         </Await>

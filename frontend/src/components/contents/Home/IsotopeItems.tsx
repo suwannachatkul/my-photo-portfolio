@@ -1,53 +1,17 @@
-import {
-  useEffect,
-  useState,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
+import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 import { Transition } from "react-transition-group";
+import { CustomImgListType } from "../../UI/Lightbox";
 
 import "./IsotopeItems.css";
 
-// dummy image list
-const IMG_LIST = [
-  {
-    img: "/assets/images/DSC02733.png",
-    name: "1",
-    Location: { Region: "Tohoku" },
-    tag: [],
-  },
-  {
-    img: "/assets/images/portrait/DSC09007.png",
-    name: "2",
-    Location: { Region: "Hokkaido" },
-    tag: [],
-  },
-  {
-    img: "/assets/images/DSC06441.png",
-    name: "3",
-    Location: { Region: "Hokkaido" },
-    tag: [],
-  },
-  {
-    img: "/assets/images/portrait/DSC09007.png",
-    name: "4",
-    Location: { Region: "Kanto" },
-    tag: [],
-  },
-  {
-    img: "/assets/images/DSC02733.png",
-    name: "5",
-    Location: { Region: "Hokkaido" },
-    tag: [],
-  },
-  // {img: '', name: '', Location: {Region: ''}, tag: []},
-];
 
 interface IIsotopeItemsProps {
+  imageList: CustomImgListType[];
   isotopeContainerClass: string;
   isotopeItemClass: string;
   selectionHandle: (name: string) => void;
   divRef: React.RefObject<HTMLDivElement>;
+  onImgClick: (imgIndex: number) => void;
 }
 
 export interface clickItemHandle {
@@ -91,9 +55,7 @@ const IsotopeItems = forwardRef((props: IIsotopeItemsProps, ref) => {
                 Region:
                 <Transition in={inProp} timeout={300}>
                   {(state) => (
-                    <span
-                      className={transitionStyles[state].class}
-                    >
+                    <span className={transitionStyles[state].class}>
                       {selection === "*" ? "All" : selection}
                     </span>
                   )}
@@ -106,21 +68,31 @@ const IsotopeItems = forwardRef((props: IIsotopeItemsProps, ref) => {
         <div
           className={`row ${props.isotopeContainerClass} mx-lg-5 mx-md-1 imgContainer`}
         >
-          {IMG_LIST.map((imgItem) => (
-            <div
-              className={`col-12 col-sm-6 col-lg-3 single_gallery_item ${imgItem.Location.Region} mb-3 fadeInUp`}
-              key={imgItem.name}
-            >
-              <div className="single-portfolio-content">
-                <img src={imgItem.img} alt={imgItem.name} />
-                <div className="hover-content">
-                  <a href="#image" className="portfolio-img">
-                    +
-                  </a>
+          {props.imageList.map((imgItem, index) => {
+            let classTag = "";
+            imgItem.tags?.forEach((tag) => {
+              classTag += " " + tag;
+            });
+            return (
+              <div
+                className={`col-12 col-sm-6 col-lg-3 single_gallery_item ${classTag} mb-3 fadeInUp`}
+                key={imgItem.name}
+              >
+                <div className="single-portfolio-content">
+                  <img src={imgItem.src} alt={imgItem.name} />
+                  <div className="hover-content">
+                    <a
+                      href="#image"
+                      className="portfolio-img"
+                      onClick={() => props.onImgClick(index)}
+                    >
+                      +
+                    </a>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

@@ -1,16 +1,18 @@
-import { useRef } from "react";
-import IsotopeComponent from "../../UI/Isotope";
-import { filterChangeHandle } from "../../UI/Isotope";
-import { clickItemHandle } from "./IsotopeItems";
-import IsotopeItems from "./IsotopeItems";
+import { useRef, useState } from "react";
+import IsotopeComponent, { filterChangeHandle } from "../../UI/Isotope";
+import IsotopeItems, { clickItemHandle } from "./IsotopeItems";
 import Map from "./Maps";
+import LightboxComponent, { CustomImgListType } from "../../UI/Lightbox";
 
 
 
-const MapGallery = () => {
+
+const MapGallery = (props: {imageList: CustomImgListType[]}) => {
   const isoTopeRef = useRef<filterChangeHandle>(null);
   const isotopeItemRef = useRef<clickItemHandle>(null);
-  const divRef = useRef<HTMLDivElement>(null)
+  const divRef = useRef<HTMLDivElement>(null);
+  const [isShowLightbox, setIsShowLightbox] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   const selectionClickHandle = (name: string) => {
     const { top } = divRef.current!.getBoundingClientRect();
@@ -20,16 +22,33 @@ const MapGallery = () => {
     });
 
     isoTopeRef.current!.filterChange(name);
-    isotopeItemRef.current!.clickItemHandle(name)
+    isotopeItemRef.current!.clickItemHandle(name);
   };
 
-  const isotopeContainerClass = "photoList"
-  const isotopeItemClass = "single_gallery_item"
+  const isotopeContainerClass = "photoList";
+  const isotopeItemClass = "single_gallery_item";
+
+  const onImgClick = (imgIndex: number) => {
+    setLightboxIndex(imgIndex);
+    setIsShowLightbox(true);
+  };
+
+  const onLightboxClose = () => {
+    setIsShowLightbox(false);
+  };
 
   return (
     <>
       <Map onRegionClick={selectionClickHandle} />
-      <IsotopeItems ref={isotopeItemRef} divRef={divRef} isotopeContainerClass={isotopeContainerClass} isotopeItemClass={isotopeItemClass} selectionHandle={selectionClickHandle}/>
+      <IsotopeItems
+        ref={isotopeItemRef}
+        divRef={divRef}
+        imageList={props.imageList}
+        isotopeContainerClass={isotopeContainerClass}
+        isotopeItemClass={isotopeItemClass}
+        selectionHandle={selectionClickHandle}
+        onImgClick={onImgClick}
+      />
       <IsotopeComponent
         ref={isoTopeRef}
         elementSel={"." + isotopeContainerClass}
@@ -47,6 +66,7 @@ const MapGallery = () => {
         }}
         transitionDuration="0.5s"
       />
+      <LightboxComponent imageList={props.imageList} isOpen={isShowLightbox} onClose={onLightboxClose} currentImageIndex={lightboxIndex} setCurrentIndex={setLightboxIndex} />
     </>
   );
 };
