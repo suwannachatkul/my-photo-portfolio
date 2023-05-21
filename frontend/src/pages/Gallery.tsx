@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import { Await, defer, useLoaderData } from "react-router-dom";
-import Header from "../components/UI/Header";
-import LoadingFullPage from "../components/UI/LoadingFullPage";
+
 import { CustomImgListType } from "../components/UI/Lightbox";
+import LoadingFullPage from "../components/UI/LoadingFullPage";
 import GalleryMain from "../components/contents/Gallery/GalleryMain";
 
 const imageList: CustomImgListType[] = [
@@ -89,9 +89,7 @@ const GalleryPage = () => {
       <Suspense fallback={loading}>
         <Await resolve={loadData}>
           {(loadedEvents) => {
-            return (
-              <GalleryMain imageList={imageList} />
-            );
+            return <GalleryMain imageList={imageList} />;
           }}
         </Await>
       </Suspense>
