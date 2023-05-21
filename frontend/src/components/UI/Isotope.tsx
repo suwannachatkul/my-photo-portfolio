@@ -4,15 +4,16 @@
  * More info https://github.com/metafizzy/isotope
  */
 import {
+  Fragment,
   forwardRef,
-  useRef,
-  useState,
   useEffect,
   useImperativeHandle,
-  Fragment
+  useRef,
+  useState,
 } from "react";
-import Isotope from "isotope-layout";
+
 import imagesLoaded from "imagesloaded";
+import Isotope from "isotope-layout";
 
 interface IIsotopeProps extends Isotope.IsotopeOptions {
   elementSel: string;
@@ -31,16 +32,16 @@ const IsotopeComponent = forwardRef((props: IIsotopeProps, ref) => {
   // store the filter keyword in a state
   const [filterKey, setFilterKey] = useState("*");
 
-  imagesLoaded(props.elementSel, () => {
-    setImgLoadedEnd(true);
-  })
-
   // initialize an Isotope object with configs
   // when image is loaded
   useEffect(() => {
-    if (imgLoadedEnd){
-        const { elementSel, ...IsotopeOptions } = props;
-        isotope.current = new Isotope(elementSel, IsotopeOptions);
+    imagesLoaded(props.elementSel, () => {
+      setImgLoadedEnd(true);
+    });
+
+    if (imgLoadedEnd) {
+      const { elementSel, ...IsotopeOptions } = props;
+      isotope.current = new Isotope(elementSel, IsotopeOptions);
     }
 
     // clear isotope id re-init
@@ -59,7 +60,7 @@ const IsotopeComponent = forwardRef((props: IIsotopeProps, ref) => {
       setFilterKey(key);
     },
   }));
-  
+
   return <Fragment></Fragment>;
 });
 
