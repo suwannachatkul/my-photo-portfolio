@@ -1,27 +1,28 @@
-import { useSelector } from "react-redux";
 import Dropdown from "react-bootstrap/Dropdown";
 import Spinner from "react-bootstrap/Spinner";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSelector } from "react-redux";
+
 import { faUser, faUserCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import {
   fetchLogin,
   logout,
+  stateAuthProcessState,
+  stateAuthResponseMsg,
   stateIsAuth,
-  stateResponseMessage,
-  stateProcessState,
 } from "../../store/authSlice";
 import { useAppDispatch } from "../../store/store";
 
 const HeaderLogin = () => {
   const dispatch = useAppDispatch();
   const isAuth = useSelector(stateIsAuth);
-  const resMsg = useSelector(stateResponseMessage);
-  const authProcessState = useSelector(stateProcessState);
+  const resMsg = useSelector(stateAuthResponseMsg);
+  const authProcessState = useSelector(stateAuthProcessState);
 
   const onSubmitHandle = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const target = event.currentTarget;
-    console.log(target.username.value, target.password.value);
     dispatch(
       fetchLogin({
         username: target.username.value,
@@ -32,7 +33,7 @@ const HeaderLogin = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-  }
+  };
   return (
     <div className="page-scroll nav-link" id="mylogindiv">
       <Dropdown align="end">
@@ -48,7 +49,9 @@ const HeaderLogin = () => {
         <Dropdown.Menu className="fromitem p-2" id="logindiv">
           {isAuth ? (
             <div className="logoutdiv">
-              <button className="btn btn-sm" onClick={handleLogout}>Logout</button>
+              <button className="btn btn-sm" onClick={handleLogout}>
+                Logout
+              </button>
             </div>
           ) : (
             <div className="row">
