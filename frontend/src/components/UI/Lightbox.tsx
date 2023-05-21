@@ -1,13 +1,14 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Lightbox, { ImagesListType } from "react-spring-lightbox";
 
-import styles from "./Lightbox.module.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
   faChevronRight,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import styles from "./Lightbox.module.css";
 import LightboxFooter from "./LightboxFooter";
 
 export type CustomImgListType = ImagesListType[number] & {
@@ -42,6 +43,12 @@ const LightboxComponent = (props: ILightBox) => {
       setIsIdle(true);
     }, 3000);
   };
+
+  useEffect(() => {
+    return () => {
+      actionHandle();
+    };
+  });
 
   const gotoPrevious = () => {
     if (props.currentImageIndex > 0) {
@@ -107,7 +114,7 @@ const LightboxComponent = (props: ILightBox) => {
           </button>
         )}
         renderHeader={() => lighboxHeader}
-        renderFooter={() => (
+        renderImageOverlay={() => (
           <LightboxFooter
             key={props.currentImageIndex}
             image={props.imageList[props.currentImageIndex]}
@@ -115,10 +122,10 @@ const LightboxComponent = (props: ILightBox) => {
           />
         )}
         pageTransitionConfig={{
-            from: { opacity: 0 },
-            enter: {opacity: 1 },
-            leave: { opacity: 0 },
-          }}
+          from: { opacity: 0 },
+          enter: { opacity: 1 },
+          leave: { opacity: 0 },
+        }}
       />
     </section>
   );
