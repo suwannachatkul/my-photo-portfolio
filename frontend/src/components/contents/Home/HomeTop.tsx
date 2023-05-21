@@ -1,9 +1,8 @@
-// import { Fragment } from "react";
-
-import ImageSlider from "./ImageSlider";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import styles from "./HomeTop.module.css";
-import { useState, useEffect } from "react";
+import ImageSlider from "./ImageSlider";
 
 const imageList = [
   {
@@ -58,12 +57,12 @@ const HomeTop = () => {
           </div>
         </div>
 
-        <a
-          href="#gallery"
-          className={`btn mb-3 mb-sm-0 mr-4 ${styles.TaglineBtn} ${aniStyleBtn}`}
+        <Link
+          to="/gallery"
+          className={`${styles.TaglineBtn} ${aniStyleBtn} btn mb-3 mb-sm-0 mr-4 `}
         >
           Gallery
-        </a>
+        </Link>
       </div>
       <ImageSlider
         images={imageList}
