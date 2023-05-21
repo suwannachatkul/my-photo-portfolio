@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Header from "../components/UI/Header";
 
-const ErrorPage: React.FC = () => {
+const ComingSoonPage: React.FC = () => {
   return (
     <>
       <Header />
@@ -14,11 +14,11 @@ const ErrorPage: React.FC = () => {
           style={{ marginBottom: "20px", marginTop: "12rem" }}
         />
         <h1 style={{ fontSize: "50px", fontWeight: "500" }}>
-          Page <span style={{ color: "#fc6060" }}>Not</span> Found!
+          Coming <span style={{ color: "#fc6060" }}>Soon</span>!
         </h1>
       </div>
     </>
   );
 };
 
-export default ErrorPage;
+export default ComingSoonPage;
