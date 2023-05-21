@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "./store";
 import axios from "axios";
+
+import { RootState } from "./store";
 
 interface authState {
   user: string | null;
@@ -92,11 +93,12 @@ const authSlice = createSlice({
 });
 
 export const stateIsAuth = (state: RootState) => state.auth.isAuthenticated;
-export const stateUser = (state: RootState) => state.auth.user;
-export const stateToken = (state: RootState) => state.auth.token;
-export const stateResponseMessage = (state: RootState) =>
+export const stateAuthUser = (state: RootState) => state.auth.user;
+export const stateAuthToken = (state: RootState) => state.auth.token;
+export const stateAuthResponseMsg = (state: RootState) =>
   state.auth.responseMessage;
-export const stateProcessState = (state: RootState) => state.auth.processState;
+export const stateAuthProcessState = (state: RootState) =>
+  state.auth.processState;
 
 export const { logout } = authSlice.actions;
 
