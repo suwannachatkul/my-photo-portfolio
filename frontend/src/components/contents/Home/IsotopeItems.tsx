@@ -1,9 +1,8 @@
-import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { Transition } from "react-transition-group";
+
 import { CustomImgListType } from "../../UI/Lightbox";
-
 import "./IsotopeItems.css";
-
 
 interface IIsotopeItemsProps {
   imageList: CustomImgListType[];
@@ -76,7 +75,7 @@ const IsotopeItems = forwardRef((props: IIsotopeItemsProps, ref) => {
             return (
               <div
                 className={`col-12 col-sm-6 col-lg-3 single_gallery_item ${classTag} mb-3 fadeInUp`}
-                key={imgItem.name}
+                key={index}
               >
                 <div className="single-portfolio-content">
                   <img src={imgItem.src} alt={imgItem.name} />
