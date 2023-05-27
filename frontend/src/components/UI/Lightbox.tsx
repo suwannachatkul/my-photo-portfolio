@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Lightbox, { ImagesListType } from "react-spring-lightbox";
 
 import {
@@ -10,6 +10,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import styles from "./Lightbox.module.css";
 import LightboxFooter from "./LightboxFooter";
+
+
+const IDLE_TIMEOUT = 3000;
 
 export type CustomImgListType = ImagesListType[number] & {
   title?: string;
@@ -29,20 +32,20 @@ const LightboxComponent = (props: ILightBox) => {
   const timeoutIdleRef = useRef<ReturnType<typeof setTimeout> | null>();
   const [isIdle, setIsIdle] = useState(false);
 
-  const actionHandle = () => {
+  const actionHandle = useCallback(() => {
     // if currently Idle set to not Idle
     if (isIdle) {
       setIsIdle(false);
     }
-    // clear idle timeout
+    // clear current idle timeout
     if (timeoutIdleRef.current) {
       clearTimeout(timeoutIdleRef.current);
     }
-    // set timeout for if user idle for 3s then isIdle=true
+    // set timeout for if user idle for set time then isIdle=true
     timeoutIdleRef.current = setTimeout(() => {
       setIsIdle(true);
-    }, 3000);
-  };
+    }, IDLE_TIMEOUT);
+  }, [isIdle])
 
   useEffect(() => {
     return () => {
