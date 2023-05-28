@@ -27,8 +27,10 @@ const IsotopeItems = forwardRef((props: IIsotopeItemsProps, ref) => {
   }, [selection]);
 
   function clickItemHandle(name: string) {
-    setSelection(name);
-    setInProp(false);
+    if (selection !== name){
+      setSelection(name);
+      setInProp(false);
+    }
   }
 
   useImperativeHandle(ref, () => ({
