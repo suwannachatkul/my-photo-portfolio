@@ -1,6 +1,7 @@
 import Dropdown from "react-bootstrap/Dropdown";
 import Spinner from "react-bootstrap/Spinner";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { faUser, faUserCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -34,6 +35,7 @@ const HeaderLogin = () => {
   const handleLogout = () => {
     dispatch(logout());
   };
+
   return (
     <div className="page-scroll nav-link" id="mylogindiv">
       <Dropdown align="end">
@@ -49,7 +51,10 @@ const HeaderLogin = () => {
         <Dropdown.Menu className="fromitem p-2" id="logindiv">
           {isAuth ? (
             <div className="logoutdiv">
-              <button className="btn btn-sm" onClick={handleLogout}>
+              <Link to="/gallery/upload" className="btn btn-sm m-1">
+                Upload
+              </Link>
+              <button className="btn btn-sm m-1" onClick={handleLogout}>
                 Logout
               </button>
             </div>
