@@ -10,18 +10,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import styles from "./Lightbox.module.css";
 import LightboxFooter from "./LightboxFooter";
+import { GalleryItem } from "../../util/formatting";
 
 
 const IDLE_TIMEOUT = 3000;
 
-export type CustomImgListType = ImagesListType[number] & {
-  title?: string;
-  description?: string;
-  tags?: string[];
-};
+export type LightboxGalleryItem = ImagesListType[number] & GalleryItem;
 
 interface ILightBox {
-  imageList: CustomImgListType[];
+  imageList: LightboxGalleryItem[];
   isOpen: boolean;
   onClose: () => void;
   currentImageIndex: number;

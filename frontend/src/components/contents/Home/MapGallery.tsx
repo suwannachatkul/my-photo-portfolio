@@ -1,13 +1,12 @@
 import { useRef, useState } from "react";
+
+import { GalleryItem } from "../../../util/formatting";
 import IsotopeComponent, { filterChangeHandle } from "../../UI/Isotope";
+import LightboxComponent, { LightboxGalleryItem } from "../../UI/Lightbox";
 import IsotopeItems, { clickItemHandle } from "./IsotopeItems";
 import Map from "./Maps";
-import LightboxComponent, { CustomImgListType } from "../../UI/Lightbox";
 
-
-
-
-const MapGallery = (props: {imageList: CustomImgListType[]}) => {
+const MapGallery = (props: { imageList: GalleryItem[] }) => {
   const isoTopeRef = useRef<filterChangeHandle>(null);
   const isotopeItemRef = useRef<clickItemHandle>(null);
   const divRef = useRef<HTMLDivElement>(null);
@@ -66,7 +65,13 @@ const MapGallery = (props: {imageList: CustomImgListType[]}) => {
         }}
         transitionDuration="0.5s"
       />
-      <LightboxComponent imageList={props.imageList} isOpen={isShowLightbox} onClose={onLightboxClose} currentImageIndex={lightboxIndex} setCurrentIndex={setLightboxIndex} />
+      <LightboxComponent
+        imageList={props.imageList as LightboxGalleryItem[]}
+        isOpen={isShowLightbox}
+        onClose={onLightboxClose}
+        currentImageIndex={lightboxIndex}
+        setCurrentIndex={setLightboxIndex}
+      />
     </>
   );
 };

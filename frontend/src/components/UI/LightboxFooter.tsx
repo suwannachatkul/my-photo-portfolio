@@ -1,8 +1,8 @@
-import { CustomImgListType } from "./Lightbox";
+import { LightboxGalleryItem } from "./Lightbox";
 import styles from "./Lightbox.module.css";
 
 interface ILightboxFooter {
-  image: CustomImgListType;
+  image: LightboxGalleryItem;
   isIdle: boolean;
 }
 

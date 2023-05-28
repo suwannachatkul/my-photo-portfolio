@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { CustomImgListType } from "../../UI/Lightbox";
+import { GalleryItem } from "../../../util/formatting";
 import PageHeader from "../../UI/PageHeader";
 import "./IsotopeGallery.css";
 
@@ -13,7 +13,7 @@ const SELECTION_LIST = [
 ];
 
 interface IIsotopeGalleryProps {
-  imageList: CustomImgListType[];
+  imageList: GalleryItem[];
   isotopeContainerClass: string;
   isotopeItemClass: string;
   selectionHandle: (name: string) => void;
@@ -62,7 +62,7 @@ const IsotopeGallery = (props: IIsotopeGalleryProps) => {
                 key={index}
               >
                 <div className="single-portfolio-content">
-                  <img src={imgItem.src} alt={imgItem.name} />
+                  <img src={imgItem.src} alt={imgItem.alt} />
                   <div className="hover-content">
                     <a
                       href="#image"

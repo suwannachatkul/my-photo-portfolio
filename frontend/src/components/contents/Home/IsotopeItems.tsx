@@ -1,11 +1,11 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { Transition } from "react-transition-group";
 
-import { CustomImgListType } from "../../UI/Lightbox";
+import { GalleryItem } from "../../../util/formatting";
 import "./IsotopeItems.css";
 
 interface IIsotopeItemsProps {
-  imageList: CustomImgListType[];
+  imageList: GalleryItem[];
   isotopeContainerClass: string;
   isotopeItemClass: string;
   selectionHandle: (name: string) => void;
@@ -78,7 +78,7 @@ const IsotopeItems = forwardRef((props: IIsotopeItemsProps, ref) => {
                 key={index}
               >
                 <div className="single-portfolio-content">
-                  <img src={imgItem.src} alt={imgItem.name} />
+                  <img src={imgItem.src} alt={imgItem.alt} />
                   <div className="hover-content">
                     <a
                       href="#image"

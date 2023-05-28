@@ -6,39 +6,51 @@ import MapGallery from "../components/contents/Home/MapGallery";
 import Footer from "../components/UI/Footer";
 import Header from "../components/UI/Header";
 import LoadingFullPage from "../components/UI/LoadingFullPage";
+import imageApi from "../util/image_api";
+import { GalleryItem } from "../util/formatting";
 
 
 // dummy image list
-const IMG_LIST = [
+const IMG_LIST: GalleryItem[] = [
   {
+    id: 1,
     src: "/assets/images/DSC02733.png",
     title: "tohoku1",
     alt: "1",
     tags: ["Tohoku"],
+    description: "",
   },
   {
+    id: 1,
     src: "/assets/images/portrait/DSC09007.png",
     title: "hokkaido2",
     alt: "2",
     tags: ["Hokkaido"],
+    description: "",
   },
   {
+    id: 1,
     src: "/assets/images/DSC06441.png",
     title: "hokkaido3",
     alt: "3",
     tags: ["Hokkaido"],
+    description: "",
   },
   {
+    id: 1,
     src: "/assets/images/portrait/DSC09007.png",
     title: "kanto4",
     alt: "4",
     tags: ["Kanto"],
+    description: "",
   },
   {
+    id: 1,
     src: "/assets/images/DSC02733.png",
     title: "hokkaido5",
     alt: "5",
     tags: ["Hokkaido"],
+    description: "",
   },
   // {img: '', name: '', Location: {Region: ''}, tag: []},
 ];
@@ -103,6 +115,10 @@ async function loaderEvents() {
   //     return resData.events
   //   }
 
+  const imgList = await imageApi("get", "/image/", "application/json", {
+    tags: ["Featured"]
+  })
+  console.log(imgList);
   // dummy promise for simulate fetch
   await new Promise<void>((resolve, reject) => {
     setTimeout(() => {

@@ -1,12 +1,13 @@
 import { Suspense } from "react";
 import { Await, defer, useLoaderData } from "react-router-dom";
 
-import { CustomImgListType } from "../components/UI/Lightbox";
 import LoadingFullPage from "../components/UI/LoadingFullPage";
 import GalleryMain from "../components/contents/Gallery/GalleryMain";
+import { GalleryItem } from "../util/formatting";
 
-const imageList: CustomImgListType[] = [
+const imageList: GalleryItem[] = [
   {
+    id: 1,
     src: "/assets/images/DSC07744.png",
     alt: "1",
     loading: "lazy",
@@ -15,6 +16,7 @@ const imageList: CustomImgListType[] = [
     tags: ["Chubu", "Tateyama", "Autumn"],
   },
   {
+    id: 1,
     src: "/assets/images/DSC04662-3.png",
     alt: "1",
     loading: "lazy",
@@ -23,6 +25,7 @@ const imageList: CustomImgListType[] = [
     tags: ["Hokkaido", "Rebun", "Cape Sukai", "Autumn"],
   },
   {
+    id: 1,
     src: "/assets/images/DSC05072.png",
     alt: "2",
     loading: "lazy",
@@ -32,6 +35,7 @@ const imageList: CustomImgListType[] = [
     tags: ["Hokkaido", "Rebun", "Cape Sukoton", "Sunset", "Autumn"],
   },
   {
+    id: 1,
     src: "/assets/images/DSC07366-2.png",
     alt: "3",
     loading: "lazy",

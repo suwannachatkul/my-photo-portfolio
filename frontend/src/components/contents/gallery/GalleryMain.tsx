@@ -7,12 +7,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { stateIsAuth } from "../../../store/authSlice";
 import IsotopeComponent, { filterChangeHandle } from "../../UI/Isotope";
-import LightboxComponent, { CustomImgListType } from "../../UI/Lightbox";
+import LightboxComponent, { LightboxGalleryItem } from "../../UI/Lightbox";
 import styles from "./GalleryMain.module.css";
 import IsotopeGallery from "./IsotopeGallery";
+import { GalleryItem } from "../../../util/formatting";
 
 interface IGalleryMain {
-  imageList: CustomImgListType[];
+  imageList: GalleryItem[];
 }
 
 const GalleryMain = (props: IGalleryMain) => {
@@ -76,7 +77,7 @@ const GalleryMain = (props: IGalleryMain) => {
         transitionDuration="0.5s"
       />
       <LightboxComponent
-        imageList={props.imageList}
+        imageList={props.imageList as LightboxGalleryItem[]}
         isOpen={isShowLightbox}
         onClose={onLightboxClose}
         currentImageIndex={lightboxIndex}
