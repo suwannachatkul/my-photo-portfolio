@@ -10,7 +10,7 @@ import IsotopeComponent, { filterChangeHandle } from "../../UI/Isotope";
 import LightboxComponent, { LightboxGalleryItem } from "../../UI/Lightbox";
 import styles from "./GalleryMain.module.css";
 import IsotopeGallery from "./IsotopeGallery";
-import { GalleryItem } from "../../../util/formatting";
+import { GalleryItem } from "../../../shared/util/formatting";
 
 interface IGalleryMain {
   imageList: GalleryItem[];

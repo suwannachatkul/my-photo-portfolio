@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import styles from "./Lightbox.module.css";
 import LightboxFooter from "./LightboxFooter";
-import { GalleryItem } from "../../util/formatting";
+import { GalleryItem } from "../../shared/util/formatting";
 
 
 const IDLE_TIMEOUT = 3000;

@@ -33,7 +33,7 @@ export const fetchLogin = createAsyncThunk<
   { rejectValue: MyKnownError }
 >("auth/login", async (loginData, { rejectWithValue }) => {
   const response = await axios
-    .postForm(process.env.REACT_APP_LOGIN_URL!, {
+    .post(process.env.REACT_APP_LOGIN_URL!, {
       username: loginData.username,
       password: loginData.password,
     })
@@ -72,7 +72,6 @@ const authSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchLogin.fulfilled, (state, action) => {
-        console.log("fullfilled", action.payload);
         state.user = action.payload.user!;
         state.token = action.payload.token!;
         state.responseMessage = "Login success!";

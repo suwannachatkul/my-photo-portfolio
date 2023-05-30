@@ -3,7 +3,7 @@ import { Await, defer, useLoaderData } from "react-router-dom";
 
 import LoadingFullPage from "../components/UI/LoadingFullPage";
 import GalleryMain from "../components/contents/Gallery/GalleryMain";
-import { GalleryItem } from "../util/formatting";
+import { GalleryItem } from "../shared/util/formatting";
 
 const imageList: GalleryItem[] = [
   {
