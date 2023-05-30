@@ -1,37 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { GalleryItem } from "../../../shared/util/formatting";
 import styles from "./HomeTop.module.css";
 import ImageSlider from "./ImageSlider";
 
-const imageList = [
-  {
-    src: "/assets/images/DSC07744.png",
-    alt: "1",
-  },
-  {
-    src: "/assets/images/DSC04662-3.png",
-    alt: "1",
-  },
-  {
-    src: "/assets/images/DSC05072.png",
-    alt: "2",
-  },
-  {
-    src: "/assets/images/DSC07366-2.png",
-    alt: "3",
-  },
-];
 
-const HomeTop = () => {
+const HomeTop = (props: { featureImgList: GalleryItem[] }) => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [isSliding, setIsSliding] = useState(false);
 
   const handleImgLoaded = (isLoaded: boolean) => {
     if (isLoaded) {
-      setTimeout(() => {
-        setImgLoaded(true);
-      }, 100);
+      setImgLoaded(true);
     }
   };
 
@@ -43,17 +24,16 @@ const HomeTop = () => {
   const slided = () => setIsSliding(false);
 
   const shouldAnimate = imgLoaded && !isSliding;
-  const aniStyleText1 = shouldAnimate ? styles.animateText : "";
-  const aniStyleText2 = shouldAnimate ? styles.animateText : "";
+  const aniStyleText = shouldAnimate ? styles.animateText : "";
   const aniStyleBtn = shouldAnimate ? styles.animateBtn : "";
 
   return (
-    <div className={`${styles.main} ${imgLoaded && styles.show} `}>
+    <div className={`${imgLoaded && styles.show}`}>
       <div className={styles.TaglineDiv}>
-        <h1 className={aniStyleText1}>TRAVEL STORIES</h1>
+        <h1 className={aniStyleText}>TRAVEL STORIES</h1>
         <div>
           <div className="d-inline-flex">
-            <p className={aniStyleText2}>My trails through photography.</p>
+            <p className={aniStyleText}>My trails through photography.</p>
           </div>
         </div>
 
@@ -65,7 +45,7 @@ const HomeTop = () => {
         </Link>
       </div>
       <ImageSlider
-        images={imageList}
+        images={props.featureImgList}
         setImgLoaded={handleImgLoaded}
         startSlideEventHandle={startSlide}
         slidedEventHandle={slided}
