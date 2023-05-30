@@ -1,50 +1,67 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   ComposableMap,
   Geographies,
   Geography,
   ZoomableGroup,
   Marker,
-  Point
+  Point,
 } from "react-simple-maps";
-import "font-awesome/css/font-awesome.min.css";
+
+import {
+  faLocationDot,
+  faSquareXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import "font-awesome/css/font-awesome.min.css";
 
 import styles from "./Maps.module.css";
-
-const geojson = require("../../../assets/jp_region4.geojson");
 
 interface MapProps {
   onRegionClick: (region: string) => void;
 }
 
 const Map = (props: MapProps) => {
+  const [geoJson, setGeoJson] = useState<any | null>(null);
   const [regionClicked, setRegionClicked] = useState("");
   const [regionHover, setRegionHover] = useState("");
+  const [showUnselect, setShowUnselect] = useState(false);
+
+  // prevent geojson to unnecessary load
+  useEffect(() => {
+    setGeoJson("../../../assets/jp_region4.geojson");
+  }, []);
 
   function clearRegionSelected() {
     if (regionClicked !== "") {
       setRegionClicked("");
       props.onRegionClick("*");
+      setShowUnselect(false);
     }
   }
 
-  function handleClickRegion(e: React.MouseEvent<SVGPathElement, MouseEvent>, geo: any) {
+  function handleClickRegion(
+    e: React.MouseEvent<SVGPathElement, MouseEvent>,
+    geo: any
+  ) {
     setRegionClicked(geo["rsmKey"]);
     // set color for event that right click during animation cause color bug
-    let target = e.target as SVGPathElement
+    let target = e.target as SVGPathElement;
     target.style["fill"] = "#914040";
     const regionName =
       geo.properties.layer[0].toUpperCase() + geo.properties.layer.slice(1);
     props.onRegionClick(regionName);
+    setShowUnselect(true);
   }
 
-  function handleRightClickRegion(e: React.MouseEvent<SVGPathElement, MouseEvent>, geo: any) {
+  function handleRightClickRegion(
+    e: React.MouseEvent<SVGPathElement, MouseEvent>,
+    geo: any
+  ) {
     e.preventDefault();
     if (geo["rsmKey"] === regionClicked) {
       clearRegionSelected();
-      let target = e.target as SVGPathElement
+      let target = e.target as SVGPathElement;
       target.style["fill"] = "#fc6060";
       setRegionHover("");
     }
@@ -72,6 +89,14 @@ const Map = (props: MapProps) => {
           </div>
         </div>
         <div className={styles.mapDiv}>
+          {showUnselect && (
+            <div style={{ position: "relative" }} className="fadeIn">
+              <button className={styles.unselect} onClick={clearRegionSelected}>
+                <FontAwesomeIcon icon={faSquareXmark} size="2xl" />
+              </button>
+            </div>
+          )}
+
           <ComposableMap
             projection="geoMercator"
             style={{ maxWidth: "100%", maxHeight: "100%" }}
@@ -82,15 +107,15 @@ const Map = (props: MapProps) => {
           >
             <ZoomableGroup
               center={[138, 38.7]} // JP center
-              zoom={12}
-              maxZoom={25}
+              zoom={10}
+              maxZoom={10}
               minZoom={10}
               translateExtent={[
                 [740, 160],
                 [800, 230],
               ]}
             >
-              <Geographies geography={geojson}>
+              <Geographies geography={geoJson}>
                 {({ geographies }) =>
                   geographies.map((geo) => {
                     const selectedRegion = regionClicked === geo.rsmKey;

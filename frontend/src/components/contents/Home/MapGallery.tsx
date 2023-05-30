@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 
-import { GalleryItem } from "../../../util/formatting";
+import { GalleryItem } from "../../../shared/util/formatting";
+import EnterViewportAnimation from "../../UI/EnterAnimation";
 import IsotopeComponent, { filterChangeHandle } from "../../UI/Isotope";
 import LightboxComponent, { LightboxGalleryItem } from "../../UI/Lightbox";
 import IsotopeItems, { clickItemHandle } from "./IsotopeItems";
@@ -14,12 +15,6 @@ const MapGallery = (props: { imageList: GalleryItem[] }) => {
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
   const selectionClickHandle = (name: string) => {
-    const { top } = divRef.current!.getBoundingClientRect();
-    window.scrollTo({
-      top: window.pageYOffset + top - 40,
-      behavior: "smooth",
-    });
-
     isoTopeRef.current!.filterChange(name);
     isotopeItemRef.current!.clickItemHandle(name);
   };
@@ -38,16 +33,20 @@ const MapGallery = (props: { imageList: GalleryItem[] }) => {
 
   return (
     <>
-      <Map onRegionClick={selectionClickHandle} />
-      <IsotopeItems
-        ref={isotopeItemRef}
-        divRef={divRef}
-        imageList={props.imageList}
-        isotopeContainerClass={isotopeContainerClass}
-        isotopeItemClass={isotopeItemClass}
-        selectionHandle={selectionClickHandle}
-        onImgClick={onImgClick}
-      />
+      <EnterViewportAnimation>
+        <Map onRegionClick={selectionClickHandle} />
+      </EnterViewportAnimation>
+      <EnterViewportAnimation>
+        <IsotopeItems
+          ref={isotopeItemRef}
+          divRef={divRef}
+          imageList={props.imageList}
+          isotopeContainerClass={isotopeContainerClass}
+          isotopeItemClass={isotopeItemClass}
+          selectionHandle={selectionClickHandle}
+          onImgClick={onImgClick}
+        />
+      </EnterViewportAnimation>
       <IsotopeComponent
         ref={isoTopeRef}
         elementSel={"." + isotopeContainerClass}

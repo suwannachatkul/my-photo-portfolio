@@ -2,7 +2,7 @@
   position: absolute;
   bottom: 20%;
   left: 15%;
-  z-index: 1000;
+  z-index: 10;
 }
 
 .TaglineDiv h1 {
@@ -47,7 +47,7 @@
    ); /* half color half white */
   background-size: 300% 100%;
   background-position: 100% 100%;
-  animation: highlightShowText 1s ease forwards;
+  animation: highlightShowText 0.75s ease forwards;
 }
 
 .TaglineDiv p {
@@ -92,7 +92,7 @@
 .animateBtn {  
   opacity: 0;
   animation: btnDelayOpacity 1s ease forwards;
-  animation-delay: 0.5s;
+  animation-delay: 0.375s;
 }
 
 @keyframes highlightShowText {
@@ -107,13 +107,13 @@
     text-shadow: none;
   }
   90% {
-    text-shadow: none;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
   }
   100% {
     width: 100%;
     opacity: 1;
     background-position: 0% 100%;
-    text-shadow: 0 1px 0 black;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 1);
     white-space:normal; 
     overflow: hidden;
   }
