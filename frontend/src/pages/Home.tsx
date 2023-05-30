@@ -1,14 +1,11 @@
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, lazy } from "react";
 import { Await, defer, useLoaderData } from "react-router-dom";
-import HomeBody from "../components/contents/Home/HomeBody";
-import HomeTop from "../components/contents/Home/HomeTop";
-import MapGallery from "../components/contents/Home/MapGallery";
-import Footer from "../components/UI/Footer";
-import Header from "../components/UI/Header";
-import LoadingFullPage from "../components/UI/LoadingFullPage";
-import imageApi from "../util/image_api";
-import { GalleryItem } from "../util/formatting";
 
+import LoadingFullPage from "../components/UI/LoadingFullPage";
+import { GalleryItem, ImgResponseToGalleryItem } from "../shared/util/formatting";
+import imageApi from "../shared/util/image_api";
+
+const HomeMain = lazy(() => import("../components/contents/Home/HomeMain"));
 
 // dummy image list
 const IMG_LIST: GalleryItem[] = [
@@ -38,7 +35,7 @@ const IMG_LIST: GalleryItem[] = [
   },
   {
     id: 1,
-    src: "/assets/images/portrait/DSC09007.png",
+    src: "/assets/images/portrait/DSC07731.png",
     title: "kanto4",
     alt: "4",
     tags: ["Kanto"],
@@ -46,55 +43,36 @@ const IMG_LIST: GalleryItem[] = [
   },
   {
     id: 1,
-    src: "/assets/images/DSC02733.png",
+    src:  "/assets/images/portrait/DSC08148.png",
     title: "hokkaido5",
     alt: "5",
     tags: ["Hokkaido"],
     description: "",
   },
-  // {img: '', name: '', Location: {Region: ''}, tag: []},
+  {
+    id: 1,
+    src: "/assets/images/DSC07345.png",
+    title: "hokkaido5",
+    alt: "5",
+    tags: ["Hokkaido"],
+    description: "",
+  },
 ];
 
 function HomePage() {
   const { loadData } = useLoaderData() as { loadData: [] };
-  const [isAtTop, setIsAtTop] = useState(false);
-
-  useEffect(() => {
-    // initial with at top true
-    setIsAtTop(true);
-
-    // set scroll event
-    window.onscroll = () => {
-      if (window.pageYOffset === 0) {
-        setIsAtTop(true);
-      } else {
-        setIsAtTop(false);
-      }
-    };
-  }, []);
-
-  const loading = (
-    <>
-      <LoadingFullPage />
-    </>
-  );
-
-  const mainContents = (
-    <div className="fadeIn">
-      <HomeTop />
-      <HomeBody />
-      <MapGallery imageList={IMG_LIST}/>
-      <Footer />
-    </div>
-  );
 
   return (
     <>
-      <Header isAtPageTop={isAtTop} />
-      <Suspense fallback={loading}>
+      <Suspense fallback={<LoadingFullPage />}>
         <Await resolve={loadData}>
           {(loadedEvents) => {
-            return mainContents;
+            console.log(loadedEvents);
+            return (
+              <div className="fadeIn">
+                <HomeMain featureImgList={loadedEvents} mapImgList={IMG_LIST} />
+              </div>
+            );
           }}
         </Await>
       </Suspense>
@@ -105,27 +83,11 @@ function HomePage() {
 export default HomePage;
 
 async function loaderEvents() {
-  //   const response = await fetch("http://localhost:8080/events");
-
-  //   if (!response.ok) {
-  //     throw json({ message: "Could not fetch events." }, { status: 500 });
-  //   } else {
-  //     // const resData = await response.json();
-  //     const resData = await response.json();
-  //     return resData.events
-  //   }
-
   const imgList = await imageApi("get", "/image/", "application/json", {
-    tags: ["Featured"]
-  })
-  console.log(imgList);
-  // dummy promise for simulate fetch
-  await new Promise<void>((resolve, reject) => {
-    setTimeout(() => {
-      resolve();
-    }, 1500);
+    tags: ["Featured"],
   });
-  return true;
+
+  return ImgResponseToGalleryItem(imgList, "eager");
 }
 
 export function loader() {

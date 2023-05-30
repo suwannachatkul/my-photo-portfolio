@@ -14,12 +14,10 @@ import ProtectedRoutes from "./pages/ProtectedRoute";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
     errorElement: <ErrorPage />,
-    loader: HomeLoader,
     children: [
-      { index: true, element: <HomePage /> },
-      { path: "home", element: <HomePage /> },
+      { index: true, element: <HomePage />, loader: HomeLoader },
+      { path: "home", element: <HomePage />, loader: HomeLoader },
     ],
   },
   {
