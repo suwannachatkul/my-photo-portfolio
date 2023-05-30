@@ -1,11 +1,12 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import Spinner from "react-bootstrap/Spinner";
 import { useNavigate } from "react-router-dom";
 import { MultiValue } from "react-select";
 
 import { faImages } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
 
+import imageApi from "../../../shared/util/image_api";
 import PageHeader from "../../UI/PageHeader";
 import styles from "./UploadForm.module.css";
 import UploadFormTagsSel, { ITags } from "./UploadFormTagsSel";
@@ -23,7 +24,6 @@ const UploadForm = () => {
 
   // This function will be triggered when the file field change
   const imageChange = (event: React.FormEvent<HTMLInputElement>) => {
-    console.log(event);
     if (event.currentTarget.files && event.currentTarget.files.length > 0) {
       setSelectedImage(event.currentTarget.files[0]);
     }
@@ -32,6 +32,22 @@ const UploadForm = () => {
   const imgIconClickHandler = () => {
     selImgRef.current!.click();
   };
+
+  // use memo to prevent re-render image when select image not change
+  const showSelectedImg = useMemo(() => {
+    return selectedImage ? (
+      <div className={`${styles["img-div"]}`}>
+        <img src={URL.createObjectURL(selectedImage)} alt="Thumb" />
+      </div>
+    ) : (
+      <FontAwesomeIcon
+        icon={faImages}
+        size="2xl"
+        className={styles["img-icon"]}
+        onClick={imgIconClickHandler}
+      />
+    );
+  }, [selectedImage]);
 
   const clearForms = () => {
     setTitleState("");
@@ -47,29 +63,24 @@ const UploadForm = () => {
       alert("Please select image");
       return;
     }
-    console.log(tagsValue);
-    const response = await axios
-      .postForm(
-        process.env.REACT_APP_IMAGE_API_URL! + "image/upload/",
-        {
-          title: title,
-          description: description,
-          image: selectedImage,
-          tags: tagsValue.map((tag) => tag.label),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_IMAGE_API_TOKEN}`,
-          },
-        }
-      )
-      .catch(function (error) {
-        console.log(error);
-        alert("Upload Fail");
-        setIsSending(false);
-        return error;
-      });
-    if (response.statusText === "Created") {
+
+    const response = await imageApi(
+      "post",
+      "/image/upload/",
+      "multipart/form-data",
+      {
+        title: title,
+        description: description,
+        image: selectedImage,
+        tags: tagsValue.map((tag) => tag.label),
+      }
+    ).catch(function (error) {
+      alert("Upload Fail");
+      setIsSending(false);
+      return error;
+    });
+
+    if (response) {
       alert("Image Uploaded");
       clearForms();
     }
@@ -135,20 +146,7 @@ const UploadForm = () => {
                 ref={selImgRef}
                 onChange={imageChange}
               />
-              <div className={styles["upload-div"]}>
-                {selectedImage ? (
-                  <div className={styles["img-div"]}>
-                    <img src={URL.createObjectURL(selectedImage)} alt="Thumb" />
-                  </div>
-                ) : (
-                  <FontAwesomeIcon
-                    icon={faImages}
-                    size="2xl"
-                    className={styles["img-icon"]}
-                    onClick={imgIconClickHandler}
-                  />
-                )}
-              </div>
+              <div className={styles["upload-div"]}>{showSelectedImg}</div>
             </div>
           </div>
           <div className="w-100"></div>
@@ -157,7 +155,11 @@ const UploadForm = () => {
               className={`btn btn-lg ${styles["submit-button"]} mx-4`}
               disabled={isSending}
             >
-              Submit
+              {isSending ? (
+                <Spinner animation="grow" role="status" size="sm" />
+              ) : (
+                "Submit"
+              )}
             </button>
             <button
               type="button"

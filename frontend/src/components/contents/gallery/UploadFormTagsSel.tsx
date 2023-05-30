@@ -1,13 +1,8 @@
-import { useState } from "react";
-import CreatableSelect from "react-select/creatable";
+import { useCallback, useEffect, useState } from "react";
 import { MultiValue } from "react-select";
+import CreatableSelect from "react-select/creatable";
 
-const DUMMY_TAGS = [
-  { name: "green", label: "Green" },
-  { name: "forest", label: "Forest" },
-  { name: "slate", label: "Slate" },
-  { name: "silver", label: "Silver" },
-];
+import imageApi from "../../../shared/util/image_api";
 
 export interface ITags {
   name: string;
@@ -20,13 +15,24 @@ interface ITagsSelProps {
 }
 
 const UploadFormTagsSel = (props: ITagsSelProps) => {
-  const [options, setOptions] = useState<ITags[]>(DUMMY_TAGS);
+  const [options, setOptions] = useState<ITags[]>([]);
 
-  // TODO use effect get request tags and set Options
+  const requestTagOption = useCallback(async () => {
+    const tagData = await imageApi("get", "/tag").catch((error) => {
+      alert(`Tag get error \n ${error.status} ${error.message}`);
+    });
+
+    if (tagData) {
+      setOptions(tagData);
+    }
+  }, []);
+
+  useEffect(() => {
+    requestTagOption();
+  }, [requestTagOption]);
 
   const tagsChangehandler = (option: MultiValue<ITags>) => {
     props.setTagsValue(option);
-    console.log(props.tagsValue);
   };
 
   const tagCreateHandler = (inputValue: string) => {
@@ -34,7 +40,7 @@ const UploadFormTagsSel = (props: ITagsSelProps) => {
       name: inputValue,
       label: inputValue,
     };
-    tagsChangehandler([...props.tagsValue, newOption])
+    tagsChangehandler([...props.tagsValue, newOption]);
   };
   return (
     <CreatableSelect
@@ -43,7 +49,6 @@ const UploadFormTagsSel = (props: ITagsSelProps) => {
       name="uploadImgTags"
       options={options}
       value={props.tagsValue}
-      getOptionValue={(option) => option.name}
       onChange={tagsChangehandler}
       onCreateOption={tagCreateHandler}
       className="p-0"
