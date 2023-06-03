@@ -76,7 +76,7 @@ const Map = (props: MapProps) => {
   }
 
   return (
-    <Fragment>
+    <>
       <div className={styles.mainDiv}>
         <div className={styles["contact-area"]}>
           <div className="container d-flex justify-content-center">
@@ -89,13 +89,14 @@ const Map = (props: MapProps) => {
           </div>
         </div>
         <div className={styles.mapDiv}>
-          {showUnselect && (
-            <div style={{ position: "relative" }} className="fadeIn">
-              <button className={styles.unselect} onClick={clearRegionSelected}>
-                <FontAwesomeIcon icon={faSquareXmark} size="2xl" />
-              </button>
-            </div>
-          )}
+          <div
+            style={{ position: "relative" }}
+            className={`fadeIn ${!showUnselect && "d-none"}`}
+          >
+            <button className={styles.unselect} onClick={clearRegionSelected}>
+              <FontAwesomeIcon icon={faSquareXmark} size="2xl" />
+            </button>
+          </div>
 
           <ComposableMap
             projection="geoMercator"
@@ -192,7 +193,7 @@ const Map = (props: MapProps) => {
           </ComposableMap>
         </div>
       </div>
-    </Fragment>
+    </>
   );
 };
 
