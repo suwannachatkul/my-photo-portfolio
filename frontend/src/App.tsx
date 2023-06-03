@@ -1,4 +1,8 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 
 import "./App.css";
 import ComingSoonPage from "./pages/ComingSoon";
@@ -14,11 +18,14 @@ import ProtectedRoutes from "./pages/ProtectedRoute";
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Navigate replace to="/home" />,
     errorElement: <ErrorPage />,
-    children: [
-      { index: true, element: <HomePage />, loader: HomeLoader },
-      { path: "home", element: <HomePage />, loader: HomeLoader },
-    ],
+  },
+  {
+    path: "/home",
+    element: <HomePage />,
+    errorElement: <ErrorPage />,
+    loader: HomeLoader,
   },
   {
     path: "gallery",
