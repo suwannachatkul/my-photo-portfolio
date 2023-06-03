@@ -1,26 +1,23 @@
-import { useRef, useState } from "react";
+import { useRef, useState, lazy, Suspense } from "react";
 
 import { GalleryItem } from "../../../shared/util/formatting";
 import EnterViewportAnimation from "../../UI/EnterAnimation";
-import IsotopeComponent, { filterChangeHandle } from "../../UI/Isotope";
-import LightboxComponent, { LightboxGalleryItem } from "../../UI/Lightbox";
-import IsotopeItems, { clickItemHandle } from "./IsotopeItems";
+import { LightboxGalleryItem } from "../../UI/Lightbox";
+import { clickItemHandle } from "./IsotopeItems";
 import Map from "./Maps";
 
+const IsotopeItems = lazy(() => import("./IsotopeItems"));
+const LightboxComponent = lazy(() => import("../../UI/Lightbox"));
+
 const MapGallery = (props: { imageList: GalleryItem[] }) => {
-  const isoTopeRef = useRef<filterChangeHandle>(null);
   const isotopeItemRef = useRef<clickItemHandle>(null);
   const divRef = useRef<HTMLDivElement>(null);
   const [isShowLightbox, setIsShowLightbox] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
   const selectionClickHandle = (name: string) => {
-    isoTopeRef.current!.filterChange(name);
     isotopeItemRef.current!.clickItemHandle(name);
   };
-
-  const isotopeContainerClass = "photoList";
-  const isotopeItemClass = "single_gallery_item";
 
   const onImgClick = (imgIndex: number) => {
     setLightboxIndex(imgIndex);
@@ -36,41 +33,22 @@ const MapGallery = (props: { imageList: GalleryItem[] }) => {
       <EnterViewportAnimation>
         <Map onRegionClick={selectionClickHandle} />
       </EnterViewportAnimation>
-      <EnterViewportAnimation>
+      <Suspense fallback={<div style={{ height: "100vh" }}></div>}>
         <IsotopeItems
           ref={isotopeItemRef}
           divRef={divRef}
           imageList={props.imageList}
-          isotopeContainerClass={isotopeContainerClass}
-          isotopeItemClass={isotopeItemClass}
           selectionHandle={selectionClickHandle}
           onImgClick={onImgClick}
         />
-      </EnterViewportAnimation>
-      <IsotopeComponent
-        ref={isoTopeRef}
-        elementSel={"." + isotopeContainerClass}
-        itemSelector={"." + isotopeItemClass}
-        percentPosition={true}
-        masonry={{
-          columnWidth: "." + isotopeItemClass,
-        }}
-        stagger={30}
-        hiddenStyle={{
-          opacity: 0,
-        }}
-        visibleStyle={{
-          opacity: 1,
-        }}
-        transitionDuration="0.5s"
-      />
-      <LightboxComponent
-        imageList={props.imageList as LightboxGalleryItem[]}
-        isOpen={isShowLightbox}
-        onClose={onLightboxClose}
-        currentImageIndex={lightboxIndex}
-        setCurrentIndex={setLightboxIndex}
-      />
+        <LightboxComponent
+          imageList={props.imageList as LightboxGalleryItem[]}
+          isOpen={isShowLightbox}
+          onClose={onLightboxClose}
+          currentImageIndex={lightboxIndex}
+          setCurrentIndex={setLightboxIndex}
+        />
+      </Suspense>
     </>
   );
 };

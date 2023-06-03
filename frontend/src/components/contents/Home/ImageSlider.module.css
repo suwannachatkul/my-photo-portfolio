@@ -1,6 +1,5 @@
 .carousel-image {
   height: 100vh;
-  /* max-height: 1000px; */
   width: 100%;
   background-color: black;
   background-size: cover;
@@ -8,10 +7,6 @@
   background-position: center center;
   animation: zoomIn 8.5s linear forwards;
 }
-
-/* .carousel-control-next:hover {
-    background-color: rgba(255, 255, 255, 0.5)
-} */
 
 .carousel .carousel-control-next {
     color: aliceblue;
