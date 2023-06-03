@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -18,13 +18,8 @@ interface IGalleryMain {
 
 const GalleryMain = (props: IGalleryMain) => {
   const isAuth = useSelector(stateIsAuth);
-  // const isoTopeRef = useRef<filterChangeHandle>(null);
   const [isShowLightbox, setIsShowLightbox] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-
-  // const selectionClickHandle = (name: string) => {
-  //   isoTopeRef.current!.filterChange(name);
-  // };
 
   const onImgClick = (imgIndex: number) => {
     setLightboxIndex(imgIndex);

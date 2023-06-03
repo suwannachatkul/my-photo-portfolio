@@ -19,6 +19,7 @@ import styles from "./Maps.module.css";
 
 interface MapProps {
   onRegionClick: (region: string) => void;
+  imgAllLoaded: boolean;
 }
 
 const Map = (props: MapProps) => {
@@ -33,7 +34,7 @@ const Map = (props: MapProps) => {
   }, []);
 
   function clearRegionSelected() {
-    if (regionClicked !== "") {
+    if (props.imgAllLoaded && regionClicked !== "") {
       setRegionClicked("");
       props.onRegionClick("*");
       setShowUnselect(false);
@@ -44,6 +45,10 @@ const Map = (props: MapProps) => {
     e: React.MouseEvent<SVGPathElement, MouseEvent>,
     geo: any
   ) {
+    if (!props.imgAllLoaded) {
+      alert("Please wait until all image is Loaded")
+      return;
+    }
     setRegionClicked(geo["rsmKey"]);
     // set color for event that right click during animation cause color bug
     let target = e.target as SVGPathElement;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { GalleryItem } from "../../../shared/util/formatting";
@@ -15,10 +15,6 @@ const HomeTop = (props: { featureImgList: GalleryItem[] }) => {
       setImgLoaded(true);
     }
   };
-
-  useEffect(() => {
-    console.log("ploaded", imgLoaded);
-  }, [imgLoaded]);
 
   const startSlide = () => setIsSliding(true);
   const slided = () => setIsSliding(false);

@@ -3,20 +3,23 @@ import { useRef, useState, lazy, Suspense } from "react";
 import { GalleryItem } from "../../../shared/util/formatting";
 import EnterViewportAnimation from "../../UI/EnterAnimation";
 import { LightboxGalleryItem } from "../../UI/Lightbox";
-import { clickItemHandle } from "./IsotopeItems";
+import { IsotopRefFunction } from "./IsotopeItems";
 import Map from "./Maps";
 
 const IsotopeItems = lazy(() => import("./IsotopeItems"));
 const LightboxComponent = lazy(() => import("../../UI/Lightbox"));
 
 const MapGallery = (props: { imageList: GalleryItem[] }) => {
-  const isotopeItemRef = useRef<clickItemHandle>(null);
+  const isotopeItemRef = useRef<IsotopRefFunction>(null);
   const divRef = useRef<HTMLDivElement>(null);
   const [isShowLightbox, setIsShowLightbox] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [imgAllLoaded, setImgAllLoaded] = useState(false);
 
   const selectionClickHandle = (name: string) => {
-    isotopeItemRef.current!.clickItemHandle(name);
+    if (imgAllLoaded) {
+      isotopeItemRef.current!.clickItemHandle(name);
+    }
   };
 
   const onImgClick = (imgIndex: number) => {
@@ -31,15 +34,18 @@ const MapGallery = (props: { imageList: GalleryItem[] }) => {
   return (
     <>
       <EnterViewportAnimation>
-        <Map onRegionClick={selectionClickHandle} />
+        <Map
+          onRegionClick={selectionClickHandle}
+          imgAllLoaded={imgAllLoaded}
+        />
       </EnterViewportAnimation>
       <Suspense fallback={<div style={{ height: "100vh" }}></div>}>
         <IsotopeItems
           ref={isotopeItemRef}
           divRef={divRef}
           imageList={props.imageList}
-          selectionHandle={selectionClickHandle}
           onImgClick={onImgClick}
+          onImgLoaded={() => setImgAllLoaded(true)}
         />
         <LightboxComponent
           imageList={props.imageList as LightboxGalleryItem[]}

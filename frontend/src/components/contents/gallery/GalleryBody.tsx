@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 import { GalleryItem } from "../../../shared/util/formatting";
+import IsotopeGallery from "../../UI/IsotopeGallery";
 import PageHeader from "../../UI/PageHeader";
 import styles from "./GalleryBody.module.css";
-import IsotopeGallery from "../../UI/IsotopeGallery";
 
 const SELECTION_LIST = [
   { name: "All", filterName: "*" },
@@ -18,17 +18,19 @@ interface GalleryBodyProps {
   imageList: GalleryItem[];
   isotopeContainerClass: string;
   isotopeItemClass: string;
-  // selectionHandle: (name: string) => void;
   onImgClick: (imgIndex: number) => void;
 }
 
 const GalleryBody = (props: GalleryBodyProps) => {
-  const galleryRef = useRef<{ filterChange: (key: string) => void }>(null)
+  const galleryRef = useRef<{ filterChange: (key: string) => void }>(null);
   const [selection, setSelection] = useState("*");
+  const [imgAllLoaded, setImgAllLoaded] = useState(false);
 
   function clickItemHandle(name: string) {
-    setSelection(name);
-    galleryRef.current!.filterChange(name);
+    if (imgAllLoaded) {
+      setSelection(name);
+      galleryRef.current!.filterChange(name);
+    }
   }
 
   return (
@@ -41,7 +43,9 @@ const GalleryBody = (props: GalleryBodyProps) => {
               {SELECTION_LIST.map((item) => (
                 <button
                   key={item.name}
-                  className={`btn ${selection === item.filterName && styles["active"]}`}
+                  className={`btn ${
+                    selection === item.filterName && styles["active"]
+                  }`}
                   onClick={() => clickItemHandle(item.filterName)}
                 >
                   {item.name}
@@ -51,12 +55,12 @@ const GalleryBody = (props: GalleryBodyProps) => {
           </div>
         </div>
 
-
         <IsotopeGallery
           ref={galleryRef}
           imageList={props.imageList}
           containerName="photoList"
           onImgClick={props.onImgClick}
+          onAllImgLoaded={() => setImgAllLoaded(true)}
         />
       </div>
     </div>

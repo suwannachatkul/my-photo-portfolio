@@ -49,7 +49,6 @@ const DEFAULT_ISOTOPE_OPTIONS = {
 const FILTER_INIT_DELAY = 500;
 
 const isotopeFilterFunc = (tag: string, itemName: HTMLElement) => {
-  console.log(itemName.getAttribute("data-tag"), tag);
   const dataTags = itemName.getAttribute("data-tag");
   if (dataTags) return dataTags.includes(tag);
   else return false;
@@ -81,7 +80,6 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
   // when image is mounted
   useEffect(() => {
     if (imgAllMounted && !isotope.current) {
-      console.log("Iso loadend");
       const optionsFromJson = JSON.parse(IsotopeOptionsJson);
       const IsotopeOpts = {
         ...DEFAULT_ISOTOPE_OPTIONS,
@@ -105,7 +103,6 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
 
   // handling filter key change
   useEffect(() => {
-    console.log("fil changed", filterKey);
     if (filterKey === "*") isotope.current?.arrange({ filter: `*` });
     else if (filterKey === "" || filterKey === null)
       isotope.current?.arrange({ filter: () => false });

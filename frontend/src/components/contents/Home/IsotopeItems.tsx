@@ -13,12 +13,12 @@ import styles from "./IsotopeItems.module.css";
 
 interface IsotopeItemsProps {
   imageList: GalleryItem[];
-  selectionHandle: (name: string) => void;
   divRef: React.RefObject<HTMLDivElement>;
   onImgClick: (imgIndex: number) => void;
+  onImgLoaded: () => void;
 }
 
-export interface clickItemHandle {
+export interface IsotopRefFunction {
   clickItemHandle: (name: string) => void;
 }
 
@@ -26,6 +26,7 @@ const IsotopeItems = forwardRef((props: IsotopeItemsProps, ref) => {
   const galleryRef = useRef<{ filterChange: (key: string) => void }>(null);
   const [selection, setSelection] = useState("*");
   const [inProp, setInProp] = useState(false);
+  const [imgAllLoaded, setImgAllLoaded] = useState(false);
 
   // set InProp for fadeIn transition text when selection change
   useEffect(() => {
@@ -33,7 +34,7 @@ const IsotopeItems = forwardRef((props: IsotopeItemsProps, ref) => {
   }, [selection]);
 
   function clickItemHandle(name: string) {
-    if (selection !== name) {
+    if (imgAllLoaded && selection !== name) {
       setSelection(name);
       setInProp(false);
       galleryRef.current!.filterChange(name);
@@ -54,7 +55,10 @@ const IsotopeItems = forwardRef((props: IsotopeItemsProps, ref) => {
   };
 
   return (
-    <div ref={props.divRef} className={`${styles["section-padding-80"]} clearfix`}>
+    <div
+      ref={props.divRef}
+      className={`${styles["section-padding-80"]} clearfix`}
+    >
       <div className="container-fluid">
         <div className="row col-12 m-auto">
           <div className={styles["filter-selection-menu"]}>
@@ -78,7 +82,10 @@ const IsotopeItems = forwardRef((props: IsotopeItemsProps, ref) => {
           containerName="photoList"
           itemStyle="col-sm-6 col-lg-3 mb-3"
           onImgClick={props.onImgClick}
-          onAllImgLoaded={()=>console.log("all Loaded!")}
+          onAllImgLoaded={() => {
+            setImgAllLoaded(true);
+            props.onImgLoaded();
+          }}
         />
       </div>
     </div>
