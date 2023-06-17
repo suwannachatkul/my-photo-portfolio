@@ -6,8 +6,10 @@ import { LightboxGalleryItem } from "../../UI/Lightbox";
 import { IsotopRefFunction } from "./IsotopeItems";
 import Map from "./Maps";
 
-const IsotopeItems = lazy(() => import("./IsotopeItems"));
-const LightboxComponent = lazy(() => import("../../UI/Lightbox"));
+const IsotopeItemsPromise = import("./IsotopeItems");
+const LightboxComponentPromise = import("../../UI/Lightbox")
+const IsotopeItems = lazy(() => IsotopeItemsPromise);
+const LightboxComponent = lazy(() => LightboxComponentPromise);
 
 const MapGallery = (props: { imageList: GalleryItem[] }) => {
   const isotopeItemRef = useRef<IsotopRefFunction>(null);
