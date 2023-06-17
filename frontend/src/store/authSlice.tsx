@@ -33,10 +33,14 @@ export const fetchLogin = createAsyncThunk<
   { rejectValue: MyKnownError }
 >("auth/login", async (loginData, { rejectWithValue }) => {
   const response = await axios
-    .post(process.env.REACT_APP_LOGIN_URL!, {
-      username: loginData.username,
-      password: loginData.password,
-    })
+    .post(
+      process.env.REACT_APP_AUTH_URL! + "login/",
+      {
+        username: loginData.username,
+        password: loginData.password,
+      },
+      { withCredentials: true }
+    )
     .catch(function (error) {
       return error;
     });
@@ -44,7 +48,7 @@ export const fetchLogin = createAsyncThunk<
   if (response.statusText === "OK") {
     return {
       user: loginData.username,
-      token: response.data.token,
+      token: response.data.access,
     };
   } else {
     if (response.response && response.response.status === 401) {
@@ -59,11 +63,43 @@ export const fetchLogin = createAsyncThunk<
   }
 });
 
+export const refreshAccessToken = createAsyncThunk<
+  Partial<authState>,
+  void,
+  { rejectValue: { errMsg: string } }
+>("auth/refreshToken", async (_, { rejectWithValue }) => {
+  // refresh token by server-side cookies no need any data
+  const response = await axios
+    .post(
+      process.env.REACT_APP_AUTH_URL! + "refresh/",
+      {},
+      { withCredentials: true }
+    )
+    .catch(function (error) {
+      return error;
+    });
+
+  if (response.statusText === "OK") {
+    return {
+      token: response.data.access,
+    };
+  } else {
+    return rejectWithValue({
+      errMsg: "Failed to refresh token. Token is expired or invalid",
+    });
+  }
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
     logout(state) {
+      axios.post(
+        process.env.REACT_APP_AUTH_URL! + "logout/",
+        {},
+        { withCredentials: true }
+      );
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
@@ -86,6 +122,24 @@ const authSlice = createSlice({
           state.responseMessage = action.payload.errMsg;
         }
         state.isAuthenticated = false;
+        state.processState = "failed";
+      })
+      .addCase(refreshAccessToken.fulfilled, (state, action) => {
+        state.token = action.payload.token!;
+        state.isAuthenticated = true;
+        state.responseMessage = "Token refresh success!";
+        state.processState = "success";
+      })
+      .addCase(refreshAccessToken.pending, (state) => {
+        state.processState = "pending";
+      })
+      .addCase(refreshAccessToken.rejected, (state, action) => {
+        if (action.payload) {
+          state.responseMessage = action.payload.errMsg;
+        }
+        state.isAuthenticated = false;
+        state.user = null;
+        state.token = null;
         state.processState = "failed";
       });
   },
