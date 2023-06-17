@@ -5,7 +5,6 @@ import {
 } from "react-router-dom";
 
 import "./App.css";
-import ComingSoonPage from "./pages/ComingSoon";
 import ContactPage from "./pages/Contact";
 import ErrorPage from "./pages/Error";
 import GalleryPage, { loader as GalleryLoader } from "./pages/Gallery";
@@ -32,6 +31,7 @@ const router = createBrowserRouter([
   {
     path: "gallery",
     element: <GalleryRoot />,
+    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <GalleryPage />, loader: GalleryLoader },
       {
@@ -41,9 +41,9 @@ const router = createBrowserRouter([
       },
     ],
   },
-  { path: "contact", element: <ContactPage /> },
-  { path: "blog", element: <ComingSoonPage /> },
-  { path: "*", element: <ErrorPage /> },
+  { path: "contact", element: <ContactPage />, errorElement: <ErrorPage />, },
+  { path: "blog", element: <ErrorPage errType="ComingSoon" />, errorElement: <ErrorPage />, },
+  { path: "*", element: <ErrorPage errType="NotFound" /> },
 ]);
 
 function App() {
