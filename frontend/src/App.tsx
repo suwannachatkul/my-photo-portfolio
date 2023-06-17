@@ -12,8 +12,10 @@ import GalleryPage, { loader as GalleryLoader } from "./pages/Gallery";
 import GalleryRoot from "./pages/GalleryRoot";
 import GalleryUpload from "./pages/GalleryUpload";
 import HomePage, { loader as HomeLoader } from "./pages/Home";
-// import LoginPage from "./pages/Login";
 import ProtectedRoutes from "./pages/ProtectedRoute";
+import store from "./store/store";
+import { refreshAccessToken } from "./store/authSlice";
+import { useEffect } from "react";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +47,9 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  // init login state by refreshAccessToken in case serverside cookies available
+  useEffect(() =>  {store.dispatch(refreshAccessToken())}, []);
+
   return <RouterProvider router={router} />;
 }
 
