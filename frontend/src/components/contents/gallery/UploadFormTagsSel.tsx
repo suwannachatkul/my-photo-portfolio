@@ -18,7 +18,7 @@ const UploadFormTagsSel = (props: ITagsSelProps) => {
   const [options, setOptions] = useState<ITags[]>([]);
 
   const requestTagOption = useCallback(async () => {
-    const tagData = await imageApi("get", "/tag").catch((error) => {
+    const tagData = await imageApi("get", "image/tags").catch((error) => {
       alert(`Tag get error \n ${error.status} ${error.message}`);
     });
 

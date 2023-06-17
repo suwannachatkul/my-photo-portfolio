@@ -3,7 +3,8 @@ import { Await, defer, useLoaderData } from "react-router-dom";
 
 import LoadingFullPage from "../components/UI/LoadingFullPage";
 import GalleryMain from "../components/contents/Gallery/GalleryMain";
-import { GalleryItem } from "../shared/util/formatting";
+import { GalleryItem, ImgResponseToGalleryItem } from "../shared/util/formatting";
+import imageApi from "../shared/util/image_api";
 
 const imageList: GalleryItem[] = [
   {
@@ -93,7 +94,7 @@ const GalleryPage = () => {
       <Suspense fallback={loading}>
         <Await resolve={loadData}>
           {(loadedEvents) => {
-            return <GalleryMain imageList={imageList} />;
+            return <GalleryMain imageList={loadedEvents} />;
           }}
         </Await>
       </Suspense>
@@ -104,22 +105,14 @@ const GalleryPage = () => {
 export default GalleryPage;
 
 async function loaderEvents() {
-  //   const response = await fetch("http://localhost:8080/events");
-
-  //   if (!response.ok) {
-  //     throw json({ message: "Could not fetch events." }, { status: 500 });
-  //   } else {
-  //     // const resData = await response.json();
-  //     const resData = await response.json();
-  //     return resData.events
-  //   }
-
+  const imgList = await imageApi("get", "image/", "application/json", {random: false});
   await new Promise<void>((resolve, reject) => {
     setTimeout(() => {
       resolve();
     }, 1500);
   });
-  return true;
+
+  return ImgResponseToGalleryItem(imgList, "eager");
 }
 
 export function loader() {

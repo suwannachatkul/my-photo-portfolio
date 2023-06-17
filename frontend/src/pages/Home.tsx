@@ -54,7 +54,7 @@ const IMG_LIST: GalleryItem[] = [
     src: "/assets/images/DSC07345.png",
     title: "hokkaido5",
     alt: "5",
-    tags: ["Hokkaido"],
+    tags: ["Tohoku"],
     description: "",
   },
 ];
@@ -67,7 +67,6 @@ function HomePage() {
       <Suspense fallback={<LoadingFullPage />}>
         <Await resolve={loadData}>
           {(loadedEvents) => {
-            console.log(loadedEvents);
             return (
               <div className="fadeIn">
                 <HomeMain featureImgList={loadedEvents} mapImgList={IMG_LIST} />
@@ -83,7 +82,7 @@ function HomePage() {
 export default HomePage;
 
 async function loaderEvents() {
-  const imgList = await imageApi("get", "/image/", "application/json", {
+  const imgList = await imageApi("get", "image/", "application/json", {
     tags: ["Featured"],
   });
 

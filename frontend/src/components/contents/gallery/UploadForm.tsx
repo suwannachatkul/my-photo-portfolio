@@ -66,7 +66,7 @@ const UploadForm = () => {
 
     const response = await imageApi(
       "post",
-      "/image/upload/",
+      "image/upload/",
       "multipart/form-data",
       {
         title: title,

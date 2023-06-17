@@ -23,13 +23,13 @@ export const ImgResponseToGalleryItem = (
   const galleryItems: GalleryItem[] = [];
 
   for (const imageData of response) {
-    const galleryItem: GalleryItem = {        
+    const galleryItem: GalleryItem = {
       id: imageData.id,
       src: imageData.image,
       alt: imageData.title,
       title: imageData.title,
       description: imageData.description,
-      tags: imageData.tags.slice(0, -1),      
+      tags: imageData.tags.slice(0, -1),
       loading,
     };
 
