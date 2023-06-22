@@ -142,11 +142,23 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
   }, [imgLoaded, imageList, onAllImgLoadedCache]);
 
   const beforeLoad = () => {
-    setImgMounted((prevCnt) => prevCnt + 1);
+    if (IsotopeOptions.lazyLoading){
+      setImgMounted((prevCnt) => prevCnt + 1);
+    } else {
+      setTimeout(()=>{
+        setImgMounted(imageList.length)
+      }, 1000)
+    }
   };
 
   const afterLoad = () => {
-    setImgLoaded((prevCnt) => prevCnt + 1);
+    if (IsotopeOptions.lazyLoading){
+      setImgLoaded((prevCnt) => prevCnt + 1);
+    } else {
+      setTimeout(()=>{
+        setImgLoaded(imageList.length)
+      }, 1000)
+    }
   };
 
   const itemName = ISOTOPE_GALLERY_DEFAULT.itemName;
@@ -200,6 +212,7 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
                 effect="blur"
                 afterLoad={afterLoad}
                 beforeLoad={beforeLoad}
+                visibleByDefault={!IsotopeOptions.lazyLoading}
               />
               <div className={styles["hover-content"]}>
                 <button onClick={() => onImgClick(index)}>+</button>
