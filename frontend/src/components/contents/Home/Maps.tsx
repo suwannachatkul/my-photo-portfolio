@@ -1,8 +1,7 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import {
   ComposableMap,
   Geographies,
-  Geography,
   ZoomableGroup,
   Marker,
   Point,
@@ -15,6 +14,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "font-awesome/css/font-awesome.min.css";
 
+import LiteGeography from "./LiteGeo";
 import styles from "./Maps.module.css";
 
 interface MapProps {
@@ -46,7 +46,7 @@ const Map = (props: MapProps) => {
     geo: any
   ) {
     if (!props.imgAllLoaded) {
-      alert("Please wait until all image is Loaded")
+      alert("Please wait until all image is Loaded");
       return;
     }
     setRegionClicked(geo["rsmKey"]);
@@ -102,7 +102,6 @@ const Map = (props: MapProps) => {
               <FontAwesomeIcon icon={faSquareXmark} size="2xl" />
             </button>
           </div>
-
           <ComposableMap
             projection="geoMercator"
             style={{ maxWidth: "100%", maxHeight: "100%" }}
@@ -116,6 +115,7 @@ const Map = (props: MapProps) => {
               zoom={10}
               maxZoom={10}
               minZoom={10}
+              filterZoomEvent={() => false}
               translateExtent={[
                 [740, 160],
                 [800, 230],
@@ -151,7 +151,7 @@ const Map = (props: MapProps) => {
                         : "";
                     return (
                       <Fragment key={geo.rsmKey}>
-                        <Geography
+                        <LiteGeography
                           className={geoAnimateClass}
                           geography={geo}
                           fill={selectedRegion ? "#914040" : "#fc6060"}
@@ -168,6 +168,7 @@ const Map = (props: MapProps) => {
                               zIndex: "10",
                             },
                           }}
+                          changed={props.imgAllLoaded}
                         />
                         <Marker coordinates={markerPos}>
                           <g

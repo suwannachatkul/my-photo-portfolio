@@ -7,7 +7,7 @@ import { IsotopRefFunction } from "./IsotopeItems";
 import Map from "./Maps";
 
 const IsotopeItemsPromise = import("./IsotopeItems");
-const LightboxComponentPromise = import("../../UI/Lightbox")
+const LightboxComponentPromise = import("../../UI/Lightbox");
 const IsotopeItems = lazy(() => IsotopeItemsPromise);
 const LightboxComponent = lazy(() => LightboxComponentPromise);
 
