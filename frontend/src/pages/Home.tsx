@@ -2,62 +2,10 @@ import { Suspense, lazy } from "react";
 import { Await, defer, useLoaderData } from "react-router-dom";
 
 import LoadingFullPage from "../components/UI/LoadingFullPage";
-import { GalleryItem, ImgResponseToGalleryItem } from "../shared/util/formatting";
+import { ImgResponseToGalleryItem } from "../shared/util/formatting";
 import imageApi from "../shared/util/image_api";
 
 const HomeMain = lazy(() => import("../components/contents/Home/HomeMain"));
-
-// dummy image list
-const IMG_LIST: GalleryItem[] = [
-  {
-    id: 1,
-    src: "/assets/images/DSC02733.png",
-    title: "tohoku1",
-    alt: "1",
-    tags: ["Tohoku"],
-    description: "",
-  },
-  {
-    id: 1,
-    src: "/assets/images/portrait/DSC09007.png",
-    title: "hokkaido2",
-    alt: "2",
-    tags: ["Hokkaido"],
-    description: "",
-  },
-  {
-    id: 1,
-    src: "/assets/images/DSC06441.png",
-    title: "hokkaido3",
-    alt: "3",
-    tags: ["Hokkaido"],
-    description: "",
-  },
-  {
-    id: 1,
-    src: "/assets/images/portrait/DSC07731.png",
-    title: "kanto4",
-    alt: "4",
-    tags: ["Kanto"],
-    description: "",
-  },
-  {
-    id: 1,
-    src:  "/assets/images/portrait/DSC08148.png",
-    title: "hokkaido5",
-    alt: "5",
-    tags: ["Hokkaido"],
-    description: "",
-  },
-  {
-    id: 1,
-    src: "/assets/images/DSC07345.png",
-    title: "hokkaido5",
-    alt: "5",
-    tags: ["Tohoku"],
-    description: "",
-  },
-];
 
 function HomePage() {
   const { loadData } = useLoaderData() as { loadData: [] };
@@ -69,7 +17,10 @@ function HomePage() {
           {(loadedEvents) => {
             return (
               <div className="fadeIn">
-                <HomeMain featureImgList={loadedEvents} mapImgList={IMG_LIST} />
+                <HomeMain
+                  featureImgList={loadedEvents.featured}
+                  mapImgList={loadedEvents.mapImg}
+                />
               </div>
             );
           }}
@@ -82,11 +33,29 @@ function HomePage() {
 export default HomePage;
 
 async function loaderEvents() {
-  const imgList = await imageApi("get", "image/", "application/json", {
+  const featuredImgList = await imageApi("get", "image/", "application/json", {
     tags: ["Featured"],
   });
 
-  return ImgResponseToGalleryItem(imgList, "eager");
+  const mapImgList = await imageApi("get", "image/", "application/json", {
+    tags: [
+      "Hokkaido",
+      "Tohoku",
+      "Kanto",
+      "Chubu",
+      "Kansai",
+      "Chugoku",
+      "Shikoku",
+      "Kyushu",
+    ],
+    random: true,
+    limit: 30,
+  });
+
+  return {
+    featured: ImgResponseToGalleryItem(featuredImgList, "eager"),
+    mapImg: ImgResponseToGalleryItem(mapImgList),
+  };
 }
 
 export function loader() {
