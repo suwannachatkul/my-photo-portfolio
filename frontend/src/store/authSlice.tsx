@@ -134,9 +134,6 @@ const authSlice = createSlice({
         state.processState = "pending";
       })
       .addCase(refreshAccessToken.rejected, (state, action) => {
-        if (action.payload) {
-          state.responseMessage = action.payload.errMsg;
-        }
         state.isAuthenticated = false;
         state.user = null;
         state.token = null;

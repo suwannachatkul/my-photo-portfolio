@@ -23,7 +23,7 @@ const HomeMain = (props: HomeMainProps) => {
   useEffect(() => {
     // set scroll event
     window.onscroll = () => {
-      if (window.pageYOffset === 0) {
+      if (window.scrollY === 0) {
         setIsAtTop(true);
       } else {
         setIsAtTop(false);

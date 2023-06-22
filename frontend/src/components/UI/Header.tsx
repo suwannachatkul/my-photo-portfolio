@@ -31,7 +31,6 @@ const Header = ({ isAtPageTop = false }: headerProps) => {
         <FontAwesomeIcon
           icon={faInstagram}
           size="lg"
-          style={{ transform: "translateY(-1px)" }}
         />
       ),
     },

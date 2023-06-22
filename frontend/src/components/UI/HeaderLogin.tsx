@@ -14,12 +14,14 @@ import {
   stateIsAuth,
 } from "../../store/authSlice";
 import { useAppDispatch } from "../../store/store";
+import { useState } from "react";
 
 const HeaderLogin = () => {
   const dispatch = useAppDispatch();
   const isAuth = useSelector(stateIsAuth);
   const resMsg = useSelector(stateAuthResponseMsg);
   const authProcessState = useSelector(stateAuthProcessState);
+  const [isShow, setIsShow] = useState(false);
 
   const onSubmitHandle = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -34,11 +36,20 @@ const HeaderLogin = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+    setIsShow(false);
   };
+
+  const toggleDropdown = () => {
+    setIsShow(!isShow);
+  }
+
+  const closeDropdown = () => {
+    setIsShow(false);
+  }
 
   return (
     <div className="page-scroll nav-link" id="mylogindiv">
-      <Dropdown align="end">
+      <Dropdown align="end" show={isShow} onToggle={toggleDropdown}>
         <Dropdown.Toggle className="icon-header" bsPrefix="p-0">
           <div className="icon-div">
             {isAuth ? (
@@ -51,7 +62,7 @@ const HeaderLogin = () => {
         <Dropdown.Menu className="fromitem p-2" id="logindiv">
           {isAuth ? (
             <div className="logoutdiv">
-              <Link to="/gallery/upload" className="btn btn-sm m-1">
+              <Link to="/gallery/upload" className="btn btn-sm m-1" onClick={closeDropdown}>
                 Upload
               </Link>
               <button className="btn btn-sm m-1" onClick={handleLogout}>

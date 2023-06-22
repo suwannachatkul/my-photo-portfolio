@@ -1,5 +1,7 @@
 .footer-wrappper {
+  position: relative;
   background: #191919;
+  z-index: 100;
 }
 
 .footer-padding {
