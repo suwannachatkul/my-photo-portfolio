@@ -2,7 +2,7 @@
   padding-top: 50px;
   padding-bottom: 80px;
   margin-bottom: 2rem;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .filter-selection-menu {

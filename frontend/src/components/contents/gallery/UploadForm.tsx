@@ -83,6 +83,7 @@ const UploadForm = () => {
     if (response) {
       alert("Image Uploaded");
       clearForms();
+      navigate(0);
     }
     setIsSending(false);
   };
