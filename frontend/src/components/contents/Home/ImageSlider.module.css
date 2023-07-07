@@ -1,0 +1,23 @@
+.carousel-image {
+  height: 100vh;
+  width: 100%;
+  background-color: black;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  animation: zoomIn 8.5s linear forwards;
+}
+
+.carousel .carousel-control-next {
+    color: aliceblue;
+  background-color: rgba(255, 255, 255, 1) !important;
+}
+
+@keyframes zoomIn {
+  0% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
