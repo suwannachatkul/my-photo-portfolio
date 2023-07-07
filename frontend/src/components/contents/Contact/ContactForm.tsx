@@ -48,10 +48,10 @@ const ContactForm = () => {
       };
       emailjs
         .send(
-          process.env.REACT_APP_EMAILJS_SERVICE_ID,
-          process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+          process.env.REACT_APP_EMAILJS_SERVICE_ID!,
+          process.env.REACT_APP_EMAILJS_TEMPLATE_ID!,
           emailsJSParams,
-          process.env.REACT_APP_EMAILJS_PUBLICKEY
+          process.env.REACT_APP_EMAILJS_PUBLICKEY!
         )
         .then(
           (result) => {
@@ -132,7 +132,7 @@ const ContactForm = () => {
             <div id="success"></div>
             <ReCAPTCHA
               ref={captcha}
-              sitekey={process.env.REACT_APP_CATCHPA_SITEKEY}
+              sitekey={process.env.REACT_APP_CATCHPA_SITEKEY!}
               onChange={handleCaptchaChange}
             />
             <button
