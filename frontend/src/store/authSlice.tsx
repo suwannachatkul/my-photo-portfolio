@@ -44,8 +44,7 @@ export const fetchLogin = createAsyncThunk<
     .catch(function (error) {
       return error;
     });
-
-  if (response.statusText === "OK") {
+  if (response.status === 200 || response.statusText === "OK") {
     return {
       user: loginData.username,
       token: response.data.access,
@@ -79,7 +78,7 @@ export const refreshAccessToken = createAsyncThunk<
       return error;
     });
 
-  if (response.statusText === "OK") {
+  if (response.status === 200 || response.statusText === "OK") {
     return {
       token: response.data.access,
     };
