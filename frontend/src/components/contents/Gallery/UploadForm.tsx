@@ -63,7 +63,7 @@ const UploadForm = () => {
       alert("Please select image");
       return;
     }
-
+    setIsSending(true);
     const response = await imageApi(
       "post",
       "image/upload/",
@@ -75,17 +75,17 @@ const UploadForm = () => {
         tags: tagsValue.map((tag) => tag.label),
       }
     ).catch(function (error) {
-      alert("Upload Fail");
+      alert("Upload Fail\n Please try again.");
       setIsSending(false);
-      return error;
+      return null;
     });
 
+    setIsSending(false);
     if (response) {
       alert("Image Uploaded");
       clearForms();
       navigate(0);
     }
-    setIsSending(false);
   };
   return (
     <div className={styles["upload-img-main"]}>
