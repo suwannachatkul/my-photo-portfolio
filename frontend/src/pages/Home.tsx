@@ -16,12 +16,10 @@ function HomePage() {
         <Await resolve={loadData}>
           {(loadedEvents) => {
             return (
-              <div className="fadeIn">
-                <HomeMain
-                  featureImgList={loadedEvents.featured}
-                  mapImgList={loadedEvents.mapImg}
-                />
-              </div>
+              <HomeMain
+                featureImgList={loadedEvents.featured}
+                mapImgList={loadedEvents.mapImg}
+              />
             );
           }}
         </Await>
