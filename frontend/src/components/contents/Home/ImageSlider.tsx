@@ -1,26 +1,48 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
-import imagesLoaded from "imagesloaded";
 import styles from "./ImageSlider.module.css";
 
-type Image = {
+type Imagetype = {
   src: string;
   alt: string;
 };
 
 interface CarouselProps {
-  images: Image[];
-  setImgLoaded: (isLoaded: boolean) => void;
+  images: Imagetype[];
+  setImgLoaded: () => void;
   startSlideEventHandle?: () => void;
   slidedEventHandle?: () => void;
 }
 
 const DivCarousel = (props: CarouselProps) => {
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const imagesProps = props.images;
+
   useEffect(() => {
-    imagesLoaded(".carousel-image", () => {
-      props.setImgLoaded(true);
+    let imageList: HTMLImageElement[] = [];
+    let loadedCount = 0;
+
+    const checkAllImagesLoaded = () => {
+      loadedCount++;
+      if (loadedCount === imagesProps.length) {
+        setImagesLoaded(true);
+      }
+    };
+
+    imagesProps.forEach((img) => {
+      const image = new Image();
+      image.onload = checkAllImagesLoaded;
+      image.src = img.src;
+      imageList.push(image);
     });
-  });
+
+  }, [imagesProps]);
+
+  useEffect(() => {
+    if (imagesLoaded) {
+      props.setImgLoaded();
+    }
+  }, [imagesLoaded])
 
   return (
     <Carousel
@@ -31,12 +53,12 @@ const DivCarousel = (props: CarouselProps) => {
       onSlide={props.startSlideEventHandle}
       onSlid={props.slidedEventHandle}
     >
-      {props.images.map((image, index) => (
+      {imagesProps.map((image, index) => (
         <Carousel.Item key={index}>
           <div
             className={styles["carousel-image"]}
             style={{
-              backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) 60%,  rgba(0, 0, 0, 0.6)), url(${image.src})`,
+              backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) 60%,  rgba(0, 0, 0, 0.5)), url(${image.src})`,
             }}
           />
         </Carousel.Item>

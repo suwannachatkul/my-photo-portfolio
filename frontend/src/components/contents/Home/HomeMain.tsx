@@ -1,10 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 
-import { GalleryItem } from "../../../shared/util/formatting";
 import useEnterViewport from "../../../shared/hooks/useEnterViewPort";
+import { GalleryItem } from "../../../shared/util/formatting";
 import EnterViewportAnimation from "../../UI/EnterAnimation";
 import Footer from "../../UI/Footer";
 import Header from "../../UI/Header";
+import LoadingFullPage from "../../UI/LoadingFullPage";
 import HomeBody from "../../contents/Home/HomeBody";
 import HomeTop from "./HomeTop";
 import MapGallery from "./MapGallery";
@@ -19,6 +20,7 @@ const HomeMain = (props: HomeMainProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const isMapEnterViewPort = useEnterViewport(mapRef);
   const [shouldRenderMap, setshouldRenderMap] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     // set scroll event
@@ -29,11 +31,18 @@ const HomeMain = (props: HomeMainProps) => {
         setIsAtTop(false);
       }
     };
+  }, []);
 
+  useEffect(() => {
     // MapGallery can cause init animation lagging, so delay render
     // or render when user scroll to it
-    setTimeout(() => setshouldRenderMap(true), 1200);
-  }, []);
+    if (isReady) {
+      setTimeout(() => setshouldRenderMap(true), 1200);
+      document.body.style.overflow = "unset";
+    } else {
+      document.body.style.overflow = "hidden";
+    }
+  }, [isReady]);
 
   useEffect(() => {
     if (isMapEnterViewPort) {
@@ -43,16 +52,22 @@ const HomeMain = (props: HomeMainProps) => {
 
   return (
     <>
-      <Header isAtPageTop={isAtTop} />
-      <HomeTop featureImgList={props.featureImgList} />
-      <EnterViewportAnimation>
-        <HomeBody />
-      </EnterViewportAnimation>
+      {!isReady && <LoadingFullPage />}
+      <div className={`${isReady && "fadeIn"}`}>
+        <Header isAtPageTop={isAtTop} />
+        <HomeTop
+          featureImgList={props.featureImgList}
+          setIsReady={() => setIsReady(true)}
+        />
+        <EnterViewportAnimation>
+          <HomeBody />
+        </EnterViewportAnimation>
 
-      <section ref={mapRef}>
-        {shouldRenderMap && <MapGallery imageList={props.mapImgList} />}
-      </section>
-      <Footer />
+        <section ref={mapRef}>
+          {shouldRenderMap && <MapGallery imageList={props.mapImgList} />}
+        </section>
+        <Footer />
+      </div>
     </>
   );
 };

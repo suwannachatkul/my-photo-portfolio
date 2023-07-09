@@ -7,7 +7,8 @@ interface customGeographyProps extends GeographyProps {
 
 const LiteGeography: React.FC<customGeographyProps> = (props) => {
   const memoGeo = useMemo(() => {
-    return <Geography {...props} />;
+    const {changed, ...geoProps } = props
+    return <Geography {...geoProps} />;
   }, [props.fill, props.className, props.changed]);
 
   return <>{memoGeo}</>;

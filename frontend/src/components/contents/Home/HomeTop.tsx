@@ -1,20 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { GalleryItem } from "../../../shared/util/formatting";
 import styles from "./HomeTop.module.css";
 import ImageSlider from "./ImageSlider";
 
+interface HomeTopProps {
+  featureImgList: GalleryItem[],
+  setIsReady: () => void
+}
 
-const HomeTop = (props: { featureImgList: GalleryItem[] }) => {
+const HomeTop = (props: HomeTopProps) => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [isSliding, setIsSliding] = useState(false);
 
-  const handleImgLoaded = (isLoaded: boolean) => {
-    if (isLoaded) {
-      setImgLoaded(true);
+  useEffect(()=>{
+    if (imgLoaded) {
+      props.setIsReady();
     }
-  };
+  },[imgLoaded])
 
   const startSlide = () => setIsSliding(true);
   const slided = () => setIsSliding(false);
@@ -42,7 +46,7 @@ const HomeTop = (props: { featureImgList: GalleryItem[] }) => {
       </div>
       <ImageSlider
         images={props.featureImgList}
-        setImgLoaded={handleImgLoaded}
+        setImgLoaded={() => setImgLoaded(true)}
         startSlideEventHandle={startSlide}
         slidedEventHandle={slided}
       />
