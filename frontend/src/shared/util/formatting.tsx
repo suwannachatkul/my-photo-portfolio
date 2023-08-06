@@ -29,7 +29,7 @@ export const ImgResponseToGalleryItem = (
       alt: imageData.title,
       title: imageData.title,
       description: imageData.description,
-      tags: imageData.tags.slice(0, -1),
+      tags: imageData.tags.slice(0),
       loading,
     };
 

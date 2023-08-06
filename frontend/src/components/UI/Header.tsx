@@ -13,8 +13,15 @@ interface headerProps {
   isAtPageTop?: boolean;
 }
 
+interface linkList {
+  link: string;
+  name: string;
+  icon?: JSX.Element;
+  isExternalLink?: boolean;
+}
+
 const Header = ({ isAtPageTop = false }: headerProps) => {
-  const navLinkList = [
+  const navLinkList: linkList[] = [
     { link: "home", name: "Home" },
     { link: "gallery", name: "Gallery" },
     { link: "blog", name: "Blog" },
@@ -25,7 +32,7 @@ const Header = ({ isAtPageTop = false }: headerProps) => {
       icon: <FontAwesomeIcon icon={faUser} />,
     },
     {
-      link: "#instagram",
+      link: "https://www.instagram.com/saraninho.su/",
       name: "Instagram",
       icon: (
         <FontAwesomeIcon
@@ -33,8 +40,41 @@ const Header = ({ isAtPageTop = false }: headerProps) => {
           size="lg"
         />
       ),
+      isExternalLink: true,
     },
   ];
+
+  const navLinkComponent = (item: linkList) => {
+    const linkText = !item.icon ? item.name : item.icon;
+
+    if (item.name === "User") {
+      return <HeaderLogin />;
+    } else if (item.isExternalLink) {
+      return (
+        <a
+          href={item.link}
+          className="page-scroll nav-link"
+          target="_blank"
+          rel="noreferrer nofollow"
+        >
+          {linkText}
+        </a>
+      );
+    }
+
+    return (
+        <NavLink
+          to={"/" + item.link}
+          className={({ isActive }) =>
+            isActive && !item.icon
+              ? "active page-scroll nav-link"
+              : "page-scroll nav-link"
+          }
+        >
+          {linkText}
+        </NavLink>
+      );
+  };
 
   const headerBackground = isAtPageTop
     ? "transparent-background"
@@ -61,20 +101,7 @@ const Header = ({ isAtPageTop = false }: headerProps) => {
           <Nav>
             {navLinkList.map((item) => (
               <li key={item.name}>
-                {item.name === "User" ? (
-                  <HeaderLogin />
-                ) : (
-                  <NavLink
-                    to={"/" + item.link}
-                    className={({ isActive }) =>
-                      isActive && !item.icon
-                        ? "active page-scroll nav-link"
-                        : "page-scroll nav-link"
-                    }
-                  >
-                    {!item.icon ? item.name : item.icon}
-                  </NavLink>
-                )}
+                {navLinkComponent(item)}
               </li>
             ))}
           </Nav>
