@@ -64,6 +64,7 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
   const [imgMounted, setImgMounted] = useState(0);
   const [imgLoaded, setImgLoaded] = useState(0);
   const [imgAllMounted, setImgAllMounted] = useState(false);
+  const [imgAllLoaded, setImgAllLoaded] = useState(false);
   const [showSpinner, setShowSpinner] = useState(true);
 
   const {
@@ -83,7 +84,7 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
   // initialize an Isotope object with configs
   // when image is mounted
   useEffect(() => {
-    if (imgAllMounted && !isotope.current) {
+    if (imgAllMounted && imgAllLoaded && !isotope.current) {
       const optionsFromJson = JSON.parse(IsotopeOptionsJson);
       const IsotopeOpts = {
         ...DEFAULT_ISOTOPE_OPTIONS,
@@ -106,7 +107,7 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
 
     // clear isotope when re-init
     return () => isotope.current?.destroy();
-  }, [imgAllMounted, containerName, IsotopeOptionsJson]);
+  }, [imgAllMounted, imgAllLoaded, containerName, IsotopeOptionsJson]);
 
   // handling filter key change
   useEffect(() => {
@@ -134,30 +135,33 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
     }
   }, [imgMounted, imageList]);
 
-  const onAllImgLoadedCache = useCallback(onAllImgLoaded, [onAllImgLoaded]);
+  const onAllImgLoadedPropsCache = useCallback(onAllImgLoaded, [
+    onAllImgLoaded,
+  ]);
   useEffect(() => {
     if (imgLoaded === imageList.length) {
-      onAllImgLoadedCache();
+      onAllImgLoadedPropsCache();
+      setImgAllLoaded(true);
     }
-  }, [imgLoaded, imageList, onAllImgLoadedCache]);
+  }, [imgLoaded, imageList, onAllImgLoadedPropsCache]);
 
   const beforeLoad = () => {
-    if (IsotopeOptions.lazyLoading){
+    if (IsotopeOptions.lazyLoading) {
       setImgMounted((prevCnt) => prevCnt + 1);
     } else {
-      setTimeout(()=>{
-        setImgMounted(imageList.length)
-      }, 1000)
+      setTimeout(() => {
+        setImgMounted(imageList.length);
+      }, 1000);
     }
   };
 
   const afterLoad = () => {
-    if (IsotopeOptions.lazyLoading){
+    if (IsotopeOptions.lazyLoading) {
       setImgLoaded((prevCnt) => prevCnt + 1);
     } else {
-      setTimeout(()=>{
-        setImgLoaded(imageList.length)
-      }, 1000)
+      setTimeout(() => {
+        setImgLoaded(imageList.length);
+      }, 1000);
     }
   };
 
@@ -165,6 +169,10 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
   const itemStyles = props.itemStyle
     ? props.itemStyle
     : ISOTOPE_GALLERY_DEFAULT.itemStyle;
+
+  const containerStyles = `${containerName} ${styles["img-container"]} ${
+    showSpinner ? styles["loading-container"] : ""
+  }`;
 
   const spinnerLoading = (
     <div style={{ position: "relative" }}>
@@ -189,9 +197,7 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
     </div>
   );
   return (
-    <div
-      className={`row mx-lg-5 mx-md-1 ${containerName} ${styles.imgContainer}`}
-    >
+    <div className={`row mx-lg-5 mx-md-1 ${containerStyles}`}>
       {showSpinner && spinnerLoading}
       {props.imageList.map((imgItem, index) => {
         let classTag = "";
