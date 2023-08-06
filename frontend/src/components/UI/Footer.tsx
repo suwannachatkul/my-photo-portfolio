@@ -24,16 +24,16 @@ const Footer = () => {
                   <span>Follow me on</span>
                 </div>
                 <div className="footer-social">
-                  <a href="https://twitter.com">
+                  <a href="https://twitter.com" target="_blank" rel="noreferrer nofollow">
                     <FontAwesomeIcon icon={faTwitter} size="lg" style={{transform: "translateY(-1px)"}}/>
                   </a>
-                  <a href="https://facebook.com">
+                  <a href="https://facebook.com" target="_blank" rel="noreferrer nofollow">
                     <FontAwesomeIcon icon={faFacebook} size="lg" style={{transform: "translateY(-1px)"}}/>
                   </a>
-                  <a href="https://instagram.com">
+                  <a href="https://www.instagram.com/saraninho.su/" target="_blank" rel="noreferrer nofollow">
                     <FontAwesomeIcon icon={faInstagram} size="lg" style={{transform: "translateY(-1px)"}}/>
                   </a>
-                  <a href="https://Linkedin.com">
+                  <a href="https://www.linkedin.com/in/saran-suwannachatkul-337b099a/" target="_blank" rel="noreferrer nofollow">
                     <FontAwesomeIcon icon={faLinkedinIn} size="lg" style={{transform: "translateY(-1px)"}}/>
                   </a>
                 </div>
