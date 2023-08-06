@@ -1,5 +1,10 @@
-.imgContainer {
+.img-container {
   min-height: 800px;
+}
+
+.loading-container {
+  max-height: 0;
+  overflow: hidden;
 }
 
 .single-portfolio-content {
