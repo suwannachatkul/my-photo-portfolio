@@ -1,6 +1,8 @@
 # My Trails Images Portfolio Website - My Travel Stories from Japan 🗾
 
-Welcome to my simple React portfolio website that displays a collection of my travel images from Japan. This project is intended to serve as a platform for my learning and experimentation with React development and related technologies. The website consists of four main pages: Home, Gallery, Blog, and Contact. While the Gallery and Home pages are fully functional, please note that the Blog page is still under development.
+Welcome to my simple React portfolio website that displays a collection of my travel images from Japan.  
+This project is intended to serve as a platform for my learning and experimentation with React development and related technologies.  
+The website consists of four main pages: Home, Gallery, Blog, and Contact. While the Gallery and Home pages are fully functional, please note that the Blog page is still under development.
 
 ## Live Website
 
