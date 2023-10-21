@@ -27,7 +27,7 @@ interface IsotopeGalleryProps extends Isotope.IsotopeOptions {
 
 const ISOTOPE_GALLERY_DEFAULT = {
   itemName: "sigle-image-item",
-  itemStyle: "col-sm-6 col-lg-4 mb-3",
+  itemStyle: "col-sm-6 col-lg-4 col-xxl-3 mb-3",
   onImgClick: (imgIndex: number) => {},
   onAllImgLoaded: () => {},
   lazyLoading: true,
