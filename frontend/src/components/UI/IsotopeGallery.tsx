@@ -88,7 +88,6 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
   const isotopeCreateFlag = lazyLoading ? true : imgAllMounted && imgAllLoaded;
   useEffect(() => {
     if (isotopeCreateFlag && !isotope.current) {
-      console.log("inittt", imgAllMounted, imgAllLoaded)
       const optionsFromJson = JSON.parse(IsotopeOptionsJson);
       const IsotopeOpts = {
         ...DEFAULT_ISOTOPE_OPTIONS,
