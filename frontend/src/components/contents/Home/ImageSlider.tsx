@@ -42,6 +42,7 @@ const DivCarousel = (props: CarouselProps) => {
     if (imagesLoaded) {
       props.setImgLoaded();
     }
+    // eslint-disable-next-line
   }, [imagesLoaded])
 
   return (

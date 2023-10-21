@@ -9,6 +9,7 @@ const LiteGeography: React.FC<customGeographyProps> = (props) => {
   const memoGeo = useMemo(() => {
     const {changed, ...geoProps } = props
     return <Geography {...geoProps} />;
+    // eslint-disable-next-line
   }, [props.fill, props.className, props.changed]);
 
   return <>{memoGeo}</>;

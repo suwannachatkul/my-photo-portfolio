@@ -116,6 +116,7 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
 
     // clear isotope when re-init
     return () => isotope.current?.layout();
+    // eslint-disable-next-line
   }, [...dependencies, lazyLoading, isotopeCreateFlag, containerName, IsotopeOptionsJson]);
 
   // handling filter key change
