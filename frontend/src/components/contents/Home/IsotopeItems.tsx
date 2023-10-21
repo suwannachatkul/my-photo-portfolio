@@ -86,7 +86,7 @@ const IsotopeItems = forwardRef((props: IsotopeItemsProps, ref) => {
             setImgAllLoaded(true);
             props.onImgLoaded();
           }}
-          lazyLoading={false}
+          lazyLoading={true}
         />
       </div>
     </div>

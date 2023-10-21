@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
+import "./LazyloadAnimate.css"
 
 import Isotope from "isotope-layout";
 
@@ -27,7 +27,7 @@ interface IsotopeGalleryProps extends Isotope.IsotopeOptions {
 
 const ISOTOPE_GALLERY_DEFAULT = {
   itemName: "sigle-image-item",
-  itemStyle: "col-sm-6 col-lg-4 mb-3",
+  itemStyle: "col-sm-6 col-lg-4 col-xxl-3 mb-3",
   onImgClick: (imgIndex: number) => {},
   onAllImgLoaded: () => {},
   lazyLoading: true,
@@ -73,6 +73,7 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
     itemStyle,
     onImgClick,
     onAllImgLoaded,
+    lazyLoading,
     ...IsotopeOptions
   } = {
     ...ISOTOPE_GALLERY_DEFAULT,
@@ -83,8 +84,10 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
 
   // initialize an Isotope object with configs
   // when image is mounted
+  const dependencies = lazyLoading ? [imgLoaded] : [imgAllMounted, imgAllLoaded]
+  const isotopeCreateFlag = lazyLoading ? true : imgAllMounted && imgAllLoaded;
   useEffect(() => {
-    if (imgAllMounted && imgAllLoaded && !isotope.current) {
+    if (isotopeCreateFlag && !isotope.current) {
       const optionsFromJson = JSON.parse(IsotopeOptionsJson);
       const IsotopeOpts = {
         ...DEFAULT_ISOTOPE_OPTIONS,
@@ -94,20 +97,26 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
       isotope.current = new Isotope("." + containerName, IsotopeOpts);
       // delay init filter to make sure image and isotope is created properly
       // and doing animation
+      const filter_init_delay = lazyLoading ? 1 : FILTER_INIT_DELAY;
       new Promise<void>((resolve) =>
         setTimeout(() => {
           setFilterKey(null);
           resolve();
-        }, FILTER_INIT_DELAY)
+        }, filter_init_delay)
       ).then(() => {
         setShowSpinner(false);
         setFilterKey("*");
       });
+    } else {
+      // reloadItems every changed
+      isotope.current?.reloadItems();
     }
 
+
     // clear isotope when re-init
-    return () => isotope.current?.destroy();
-  }, [imgAllMounted, imgAllLoaded, containerName, IsotopeOptionsJson]);
+    return () => isotope.current?.layout();
+    // eslint-disable-next-line
+  }, [...dependencies, lazyLoading, isotopeCreateFlag, containerName, IsotopeOptionsJson]);
 
   // handling filter key change
   useEffect(() => {
@@ -146,7 +155,7 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
   }, [imgLoaded, imageList, onAllImgLoadedPropsCache]);
 
   const beforeLoad = () => {
-    if (IsotopeOptions.lazyLoading) {
+    if (lazyLoading) {
       setImgMounted((prevCnt) => prevCnt + 1);
     } else {
       setTimeout(() => {
@@ -156,13 +165,7 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
   };
 
   const afterLoad = () => {
-    if (IsotopeOptions.lazyLoading) {
-      setImgLoaded((prevCnt) => prevCnt + 1);
-    } else {
-      setTimeout(() => {
-        setImgLoaded(imageList.length);
-      }, 1000);
-    }
+    setImgLoaded((prevCnt) => prevCnt + 1);
   };
 
   const itemName = ISOTOPE_GALLERY_DEFAULT.itemName;
@@ -171,7 +174,7 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
     : ISOTOPE_GALLERY_DEFAULT.itemStyle;
 
   const containerStyles = `${containerName} ${styles["img-container"]} ${
-    showSpinner ? styles["loading-container"] : ""
+    !lazyLoading && showSpinner ? styles["loading-container"] : ""
   }`;
 
   const spinnerLoading = (
@@ -198,7 +201,7 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
   );
   return (
     <div className={`row mx-lg-5 mx-md-1 ${containerStyles}`}>
-      {showSpinner && spinnerLoading}
+      {!lazyLoading && showSpinner && spinnerLoading}
       {props.imageList.map((imgItem, index) => {
         let classTag = "";
         imgItem.tags?.forEach((tag) => {
@@ -218,7 +221,7 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
                 effect="blur"
                 afterLoad={afterLoad}
                 beforeLoad={beforeLoad}
-                visibleByDefault={!IsotopeOptions.lazyLoading}
+                visibleByDefault={!lazyLoading}
               />
               <div className={styles["hover-content"]}>
                 <button onClick={() => onImgClick(index)}>+</button>

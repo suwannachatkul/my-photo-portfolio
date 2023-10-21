@@ -13,11 +13,12 @@ interface HomeTopProps {
 const HomeTop = (props: HomeTopProps) => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [isSliding, setIsSliding] = useState(false);
-
+  // eslint-disable-next-line
   useEffect(()=>{
     if (imgLoaded) {
       props.setIsReady();
     }
+    // eslint-disable-next-line
   },[imgLoaded])
 
   const startSlide = () => setIsSliding(true);

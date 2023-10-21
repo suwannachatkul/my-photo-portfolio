@@ -38,7 +38,7 @@ async function loaderEvents() {
     }, 1500);
   });
 
-  return ImgResponseToGalleryItem(imgList, "eager");
+  return ImgResponseToGalleryItem(imgList);
 }
 
 export function loader() {
