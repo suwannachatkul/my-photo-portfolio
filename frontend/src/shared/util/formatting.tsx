@@ -9,7 +9,7 @@ export interface ImageApiResponse {
 export interface GalleryItem {
   id: number;
   src: string;
-  srcPreview?: string;
+  srcPreview?: string | null;
   alt: string;
   title: string;
   description: string;
@@ -18,11 +18,13 @@ export interface GalleryItem {
 }
 
 function addPreviewToFilename(url: string) {
-  const lastDotIndex = url.lastIndexOf('.');
-  if (lastDotIndex === -1) return url; // No extension found
+  let newUrl = url.replace('/images/', '/previews/');
 
-  const beforeExt = url.slice(0, lastDotIndex);
-  const ext = url.slice(lastDotIndex);
+  const lastDotIndex = newUrl.lastIndexOf('.');
+  if (lastDotIndex === -1) return null; // No extension found
+
+  const beforeExt = newUrl.slice(0, lastDotIndex);
+  const ext = newUrl.slice(lastDotIndex);
 
   return beforeExt + '-preview' + ext;
 }

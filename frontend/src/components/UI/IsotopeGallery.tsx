@@ -205,7 +205,6 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
       {!lazyLoading && showSpinner && spinnerLoading}
       {props.imageList.map((imgItem, index) => {
         let classTag = "";
-        console.log(imgItem.srcPreview);
         imgItem.tags?.forEach((tag) => {
           classTag += " " + tag;
         });
