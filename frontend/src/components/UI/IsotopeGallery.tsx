@@ -199,11 +199,13 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
       </div>
     </div>
   );
+
   return (
     <div className={`row mx-lg-5 mx-md-1 ${containerStyles}`}>
       {!lazyLoading && showSpinner && spinnerLoading}
       {props.imageList.map((imgItem, index) => {
         let classTag = "";
+        console.log(imgItem.srcPreview);
         imgItem.tags?.forEach((tag) => {
           classTag += " " + tag;
         });
@@ -216,7 +218,7 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
             <div className={styles["single-portfolio-content"]}>
               <LazyLoadImage
                 key={index}
-                src={imgItem.src}
+                src={imgItem.srcPreview ? imgItem.srcPreview : imgItem.src}
                 alt={imgItem.alt}
                 effect="blur"
                 afterLoad={afterLoad}

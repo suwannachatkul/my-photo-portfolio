@@ -9,11 +9,22 @@ export interface ImageApiResponse {
 export interface GalleryItem {
   id: number;
   src: string;
+  srcPreview?: string;
   alt: string;
   title: string;
   description: string;
   tags: string[];
   loading?: "auto" | "eager" | "lazy";
+}
+
+function addPreviewToFilename(url: string) {
+  const lastDotIndex = url.lastIndexOf('.');
+  if (lastDotIndex === -1) return url; // No extension found
+
+  const beforeExt = url.slice(0, lastDotIndex);
+  const ext = url.slice(lastDotIndex);
+
+  return beforeExt + '-preview' + ext;
 }
 
 export const ImgResponseToGalleryItem = (
@@ -26,6 +37,7 @@ export const ImgResponseToGalleryItem = (
     const galleryItem: GalleryItem = {
       id: imageData.id,
       src: imageData.image,
+      srcPreview: addPreviewToFilename(imageData.image),
       alt: imageData.title,
       title: imageData.title,
       description: imageData.description,
