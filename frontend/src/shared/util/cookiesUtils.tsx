@@ -3,7 +3,7 @@ export function setCookie(name: string, value: string, expireIn: number): void {
     now.setTime(now.getTime() + expireIn);
 
     const expires = "expires=" + now.toUTCString();
-    document.cookie = `${name}=${value}; ${expires}; path=/`;
+    document.cookie = `${name}=${value}; SameSite=Strict; ${expires}; path=/`;
 }
 
 export function getCookie(cookieName: string): string | undefined {
