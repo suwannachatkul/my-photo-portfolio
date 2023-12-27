@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { setCookie, deleteCookie } from "../shared/util/cookiesUtils";
 
 import { RootState } from "./store";
 
@@ -45,6 +46,8 @@ export const fetchLogin = createAsyncThunk<
       return error;
     });
   if (response.status === 200 || response.statusText === "OK") {
+    const expireDay = 7 * 24 * 60 * 60 * 1000; // 7 days
+    setCookie("IsRefreshTokenAvailable", "true", expireDay);
     return {
       user: loginData.username,
       token: response.data.access,
@@ -79,10 +82,13 @@ export const refreshAccessToken = createAsyncThunk<
     });
 
   if (response.status === 200 || response.statusText === "OK") {
+    const expireDay = 7 * 24 * 60 * 60 * 1000; // 7 days
+    setCookie("IsRefreshTokenAvailable", "true", expireDay);
     return {
       token: response.data.access,
     };
   } else {
+    deleteCookie("IsRefreshTokenAvailable");
     return rejectWithValue({
       errMsg: "Failed to refresh token. Token is expired or invalid",
     });
@@ -102,6 +108,7 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
+      deleteCookie("IsRefreshTokenAvailable");
     },
   },
   extraReducers(builder) {

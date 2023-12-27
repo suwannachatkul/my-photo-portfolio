@@ -15,6 +15,7 @@ import ProtectedRoutes from "./pages/ProtectedRoute";
 import store from "./store/store";
 import { refreshAccessToken } from "./store/authSlice";
 import { useEffect } from "react";
+import { getCookie } from "./shared/util/cookiesUtils";
 
 const router = createBrowserRouter([
   {
@@ -48,7 +49,12 @@ const router = createBrowserRouter([
 
 function App() {
   // init login state by refreshAccessToken in case serverside cookies available
-  useEffect(() =>  {store.dispatch(refreshAccessToken())}, []);
+  useEffect(() =>  {
+    const IsRefreshTokenAvailable = getCookie("IsRefreshTokenAvailable");
+    if (IsRefreshTokenAvailable) {
+      store.dispatch(refreshAccessToken())
+    }
+  }, []);
 
   return <RouterProvider router={router} />;
 }
