@@ -61,7 +61,7 @@ const GalleryBody = (props: GalleryBodyProps) => {
           containerName="photoList"
           onImgClick={props.onImgClick}
           onAllImgLoaded={() => setImgAllLoaded(true)}
-          lazyLoading={true}
+          lazyLoading={false}
         />
       </div>
     </div>

@@ -220,7 +220,7 @@ const IsotopeGallery = forwardRef((props: IsotopeGalleryProps, ref) => {
                 src={imgItem.srcPreview ? imgItem.srcPreview : imgItem.src}
                 alt={imgItem.alt}
                 effect="blur"
-                afterLoad={afterLoad}
+                onLoad={afterLoad}
                 beforeLoad={beforeLoad}
                 visibleByDefault={!lazyLoading}
               />

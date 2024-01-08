@@ -48,6 +48,7 @@ const MapGallery = (props: { imageList: GalleryItem[] }) => {
           imageList={props.imageList}
           onImgClick={onImgClick}
           onImgLoaded={() => setImgAllLoaded(true)}
+          lazyLoading={false}
         />
         <LightboxComponent
           imageList={props.imageList as LightboxGalleryItem[]}

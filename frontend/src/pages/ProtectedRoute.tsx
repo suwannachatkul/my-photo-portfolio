@@ -10,11 +10,15 @@ import {
 } from "../store/authSlice";
 import { useAppDispatch } from "../store/store";
 import LoadingFullPage from "../components/UI/LoadingFullPage";
+import { getCookie } from "../shared/util/cookiesUtils";
 
 const ProtectedRoutes = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(refreshAccessToken());
+    const IsRefreshTokenAvailable = getCookie("IsRefreshTokenAvailable");
+    if (IsRefreshTokenAvailable) {
+      dispatch(refreshAccessToken());
+    }
   }, [dispatch]);
 
   const location = useLocation();
@@ -22,15 +26,15 @@ const ProtectedRoutes = () => {
   const token = useSelector(stateAuthToken);
   const authProcessState = useSelector(stateAuthProcessState);
 
-  if (authProcessState === 'pending' || authProcessState === 'init' ) {
+  if (authProcessState === "pending" || authProcessState === "init") {
     throw Promise.resolve(); // Throw a promise to suspend rendering
   }
 
   return isAuth && token ? (
-      <Outlet />
-    ) : (
-      <Navigate to="/Error" replace state={{ from: location }} />
-    );
+    <Outlet />
+  ) : (
+    <Navigate to="/Error" replace state={{ from: location }} />
+  );
 };
 
 const ProtectedRoutesWrapper = () => {

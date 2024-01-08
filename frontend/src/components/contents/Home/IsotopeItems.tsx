@@ -16,6 +16,7 @@ interface IsotopeItemsProps {
   divRef: React.RefObject<HTMLDivElement>;
   onImgClick: (imgIndex: number) => void;
   onImgLoaded: () => void;
+  lazyLoading?: boolean;
 }
 
 export interface IsotopRefFunction {
@@ -86,7 +87,7 @@ const IsotopeItems = forwardRef((props: IsotopeItemsProps, ref) => {
             setImgAllLoaded(true);
             props.onImgLoaded();
           }}
-          lazyLoading={true}
+          lazyLoading={props.lazyLoading}
         />
       </div>
     </div>
